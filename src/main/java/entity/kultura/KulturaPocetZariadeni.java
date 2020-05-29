@@ -33,15 +33,15 @@ public class KulturaPocetZariadeni {
     private String mestskaCast;
 
     @DatabaseField(canBeNull = false)
-    private String rok;
+    private int rok;
 
     @DatabaseField(canBeNull = false)
-    private String pocetZariadeni;
+    private int pocetZariadeni;
 
     @DatabaseField(canBeNull = false)
     private String typ;
 
-    public KulturaPocetZariadeni(String okres, String mestskaCast, String rok, String pocetZariadeni, String typ) {
+    public KulturaPocetZariadeni(String okres, String mestskaCast, int rok, int pocetZariadeni, String typ) {
         this.okres = okres;
         this.mestskaCast = mestskaCast;
         this.rok = rok;
@@ -57,10 +57,10 @@ public class KulturaPocetZariadeni {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         KulturaPocetZariadeni that = (KulturaPocetZariadeni) o;
-        return getOkres().equals(that.getOkres()) &&
+        return getRok() == that.getRok() &&
+                getPocetZariadeni() == that.getPocetZariadeni() &&
+                getOkres().equals(that.getOkres()) &&
                 getMestskaCast().equals(that.getMestskaCast()) &&
-                getRok().equals(that.getRok()) &&
-                getPocetZariadeni().equals(that.getPocetZariadeni()) &&
                 getTyp().equals(that.getTyp());
     }
 

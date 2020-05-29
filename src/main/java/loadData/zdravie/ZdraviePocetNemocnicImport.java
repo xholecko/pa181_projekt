@@ -23,7 +23,9 @@ public class ZdraviePocetNemocnicImport {
             ZdraviePocetNemocnicDaoImpl dao = new ZdraviePocetNemocnicDaoImpl(connectionSource);
             while ((line = br.readLine()) != null && !line.startsWith(";")){
                 String[] fields = line.split(cvsSplitBy);
-                ZdraviePocetNemocnic entity = new ZdraviePocetNemocnic(fields[0],fields[1],fields[2],fields[3]);
+                ZdraviePocetNemocnic entity = new ZdraviePocetNemocnic(fields[0],fields[1],
+                        fields[2].equals("") ? 0 : Integer.parseInt(fields[2].replaceAll("\\s+", "")),
+                        fields[3].equals("") ? 0 : Integer.parseInt(fields[3].replaceAll("\\s+", "")));
                 dao.createIfNotExists(entity);
             }
             br.close();

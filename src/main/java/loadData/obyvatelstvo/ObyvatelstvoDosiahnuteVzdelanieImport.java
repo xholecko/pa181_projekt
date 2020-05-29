@@ -25,9 +25,15 @@ public class ObyvatelstvoDosiahnuteVzdelanieImport {
             String cvsSplitBy = ";";
             ObyvatelstvoDosiahnuteVzdelanieDaoImpl dao = new ObyvatelstvoDosiahnuteVzdelanieDaoImpl(connectionSource);
 
+
             while ((line = br.readLine()) != null && !line.startsWith(";")){
                 String[] fields = line.split(cvsSplitBy);
-                ObyvatelstvoDosiahnuteVzdelanie entity = new ObyvatelstvoDosiahnuteVzdelanie(fields[3],fields[5],fields[7],fields[8],fields[9],fields[10],fields[11]);
+                ObyvatelstvoDosiahnuteVzdelanie entity =
+                        new ObyvatelstvoDosiahnuteVzdelanie(fields[3],fields[5],fields[7],
+                        fields[8].equals("") ? 0 : Integer.parseInt(fields[8].replaceAll("\\s+", "")),
+                        fields[9].equals("") ? 0 :Integer.parseInt(fields[9].replaceAll("\\s+", "")),
+                        fields[10].equals("") ? 0 :Integer.parseInt(fields[10].replaceAll("\\s+", "")),
+                        fields[11].equals("") ? 0 :Integer.parseInt(fields[11].replaceAll("\\s+", "")));
                 dao.createIfNotExists(entity);
             }
             br.close();

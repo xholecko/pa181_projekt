@@ -28,12 +28,12 @@ public class EkonomikaIndexStartnutia {
     private String mestskaCast;
 
     @DatabaseField(canBeNull = false)
-    private String rok;
+    private int rok;
 
     @DatabaseField(canBeNull = false)
-    private String indexStarnutia;
+    private double indexStarnutia;
 
-    public EkonomikaIndexStartnutia(String okres, String mestskaCast, String rok, String indexStarnutia) {
+    public EkonomikaIndexStartnutia(String okres, String mestskaCast, int rok, double indexStarnutia) {
         this.okres = okres;
         this.mestskaCast = mestskaCast;
         this.rok = rok;
@@ -48,10 +48,10 @@ public class EkonomikaIndexStartnutia {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         EkonomikaIndexStartnutia that = (EkonomikaIndexStartnutia) o;
-        return getOkres().equals(that.getOkres()) &&
-                getMestskaCast().equals(that.getMestskaCast()) &&
-                getRok().equals(that.getRok()) &&
-                getIndexStarnutia().equals(that.getIndexStarnutia());
+        return getRok() == that.getRok() &&
+                Double.compare(that.getIndexStarnutia(), getIndexStarnutia()) == 0 &&
+                getOkres().equals(that.getOkres()) &&
+                getMestskaCast().equals(that.getMestskaCast());
     }
 
     @Override

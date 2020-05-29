@@ -24,7 +24,9 @@ public class DopravaPocetNehodImport {
             DopravaPocetNehodDaoImpl dao = new DopravaPocetNehodDaoImpl(connectionSource);
             while ((line = br.readLine()) != null && !line.startsWith(";")){
                 String[] fields = line.split(cvsSplitBy);
-                DopravaPocetNehod entity = new DopravaPocetNehod(fields[0],Integer.parseInt(fields[1].replaceAll("\\s+", "")),Integer.parseInt(fields[2].replaceAll("\\s+", "")));
+                DopravaPocetNehod entity = new DopravaPocetNehod(fields[0],
+                        fields[1].equals("") ? 0 : Integer.parseInt(fields[1].replaceAll("\\s+", "")),
+                        fields[2].equals("") ? 0 : Integer.parseInt(fields[2].replaceAll("\\s+", "")));
                 dao.createIfNotExists(entity);
             }
             br.close();

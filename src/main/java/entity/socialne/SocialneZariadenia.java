@@ -25,12 +25,12 @@ public class SocialneZariadenia {
     private String okres;
 
     @DatabaseField(canBeNull = false)
-    private String rok;
+    private int rok;
 
     @DatabaseField(canBeNull = false)
-    private String pocet;
+    private int pocet;
 
-    public SocialneZariadenia(String okres, String rok, String pocet) {
+    public SocialneZariadenia(String okres, int rok, int pocet) {
         this.okres = okres;
         this.rok = rok;
         this.pocet = pocet;
@@ -44,9 +44,9 @@ public class SocialneZariadenia {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         SocialneZariadenia that = (SocialneZariadenia) o;
-        return getOkres().equals(that.getOkres()) &&
-                getRok().equals(that.getRok()) &&
-                getPocet().equals(that.getPocet());
+        return getRok() == that.getRok() &&
+                getPocet() == that.getPocet() &&
+                getOkres().equals(that.getOkres());
     }
 
     @Override

@@ -28,27 +28,27 @@ public class ObyvatelstvoVierovyznanie {
     private String mestskaCast;
 
     @DatabaseField(canBeNull = false)
-    private String rimskokatolici;
+    private int rimskokatolici;
 
     @DatabaseField(canBeNull = false)
-    private String evanjelici;
+    private int evanjelici;
 
     @DatabaseField(canBeNull = false)
-    private String greckokatolici;
+    private int greckokatolici;
 
     @DatabaseField(canBeNull = false)
-    private String zidia;
+    private int zidia;
 
     @DatabaseField(canBeNull = false)
-    private String ine;
+    private int ine;
 
     @DatabaseField(canBeNull = false)
-    private String ateisti;
+    private int ateisti;
 
     @DatabaseField(canBeNull = false)
-    private String spolu;
+    private int spolu;
 
-    public ObyvatelstvoVierovyznanie(String okres, String mestskaCast, String rimskokatolici, String evanjelici, String greckokatolici, String zidia, String ine, String ateisti, String spolu) {
+    public ObyvatelstvoVierovyznanie(String okres, String mestskaCast, int rimskokatolici, int evanjelici, int greckokatolici, int zidia, int ine, int ateisti, int spolu) {
         this.okres = okres;
         this.mestskaCast = mestskaCast;
         this.rimskokatolici = rimskokatolici;
@@ -68,20 +68,20 @@ public class ObyvatelstvoVierovyznanie {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ObyvatelstvoVierovyznanie that = (ObyvatelstvoVierovyznanie) o;
-        return getOkres().equals(that.getOkres()) &&
-                getMestskaCast().equals(that.getMestskaCast()) &&
-                Objects.equals(getRimskokatolici(), that.getRimskokatolici()) &&
-                Objects.equals(getEvanjelici(), that.getEvanjelici()) &&
-                Objects.equals(getGreckokatolici(), that.getGreckokatolici()) &&
-                Objects.equals(getZidia(), that.getZidia()) &&
-                Objects.equals(getIne(), that.getIne()) &&
-                Objects.equals(getAteisti(), that.getAteisti()) &&
-                Objects.equals(getSpolu(), that.getSpolu());
+        return getRimskokatolici() == that.getRimskokatolici() &&
+                getEvanjelici() == that.getEvanjelici() &&
+                getGreckokatolici() == that.getGreckokatolici() &&
+                getZidia() == that.getZidia() &&
+                getIne() == that.getIne() &&
+                getAteisti() == that.getAteisti() &&
+                getSpolu() == that.getSpolu() &&
+                getOkres().equals(that.getOkres()) &&
+                getMestskaCast().equals(that.getMestskaCast());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getOkres(), getMestskaCast(), getRimskokatolici(), getEvanjelici(), getGreckokatolici(), getZidia(), getIne(), getAteisti(), getSpolu());
+        return Objects.hash(getMestskaCast(), getRimskokatolici(), getEvanjelici(), getGreckokatolici(), getZidia(), getIne(), getAteisti(), getSpolu());
     }
 
     @Override

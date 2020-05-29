@@ -29,15 +29,15 @@ public class VzdelanieInternatyVS {
     private String mestskaCast;
 
     @DatabaseField(canBeNull = false)
-    private String rok;
+    private int rok;
 
     @DatabaseField(canBeNull = false)
-    private String pocetInternatov;
+    private int pocetInternatov;
 
     @DatabaseField(canBeNull = false)
-    private String pocetLozok;
+    private int pocetLozok;
 
-    public VzdelanieInternatyVS(String okres, String mestskaCast, String rok, String pocetInternatov, String pocetLozok) {
+    public VzdelanieInternatyVS(String okres, String mestskaCast, int rok, int pocetInternatov, int pocetLozok) {
         this.okres = okres;
         this.mestskaCast = mestskaCast;
         this.rok = rok;
@@ -53,11 +53,11 @@ public class VzdelanieInternatyVS {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         VzdelanieInternatyVS that = (VzdelanieInternatyVS) o;
-        return getOkres().equals(that.getOkres()) &&
-                getMestskaCast().equals(that.getMestskaCast()) &&
-                getRok().equals(that.getRok()) &&
-                getPocetInternatov().equals(that.getPocetInternatov()) &&
-                getPocetLozok().equals(that.getPocetLozok());
+        return getRok() == that.getRok() &&
+                getPocetInternatov() == that.getPocetInternatov() &&
+                getPocetLozok() == that.getPocetLozok() &&
+                getOkres().equals(that.getOkres()) &&
+                getMestskaCast().equals(that.getMestskaCast());
     }
 
     @Override

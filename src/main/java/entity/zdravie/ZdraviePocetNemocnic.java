@@ -26,12 +26,12 @@ public class ZdraviePocetNemocnic {
     private String mestskaCast;
 
     @DatabaseField(canBeNull = false)
-    private String rok;
+    private int rok;
 
     @DatabaseField(canBeNull = false)
-    private String pocetPoliklinik;
+    private int pocetPoliklinik;
 
-    public ZdraviePocetNemocnic(String okres, String mestskaCast, String rok, String pocetPoliklinik) {
+    public ZdraviePocetNemocnic(String okres, String mestskaCast, int rok, int pocetPoliklinik) {
         this.okres = okres;
         this.mestskaCast = mestskaCast;
         this.rok = rok;
@@ -46,10 +46,10 @@ public class ZdraviePocetNemocnic {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ZdraviePocetNemocnic that = (ZdraviePocetNemocnic) o;
-        return getOkres().equals(that.getOkres()) &&
-                getMestskaCast().equals(that.getMestskaCast()) &&
-                getRok().equals(that.getRok()) &&
-                getPocetPoliklinik().equals(that.getPocetPoliklinik());
+        return getRok() == that.getRok() &&
+                getPocetPoliklinik() == that.getPocetPoliklinik() &&
+                getOkres().equals(that.getOkres()) &&
+                getMestskaCast().equals(that.getMestskaCast());
     }
 
     @Override

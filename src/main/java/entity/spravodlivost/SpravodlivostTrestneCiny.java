@@ -24,19 +24,19 @@ public class SpravodlivostTrestneCiny {
     @DatabaseField(canBeNull = false)
     private String okres;
 
-    @DatabaseField(canBeNull = false)
+    @DatabaseField(canBeNull = false) // Rok je aj v inom formate ako int (01/2018 - 06/2018)
     private String rok;
 
     @DatabaseField(canBeNull = false)
-    private String pocetDodatocneObjasnenych;
+    private int pocetDodatocneObjasnenych;
 
     @DatabaseField(canBeNull = false)
-    private String pocetObjasnenych;
+    private int pocetObjasnenych;
 
     @DatabaseField(canBeNull = false)
-    private String pocetZistenych;
+    private int pocetZistenych;
 
-    public SpravodlivostTrestneCiny(String okres, String rok, String pocetDodatocneObjasnenych, String pocetObjasnenych, String pocetZistenych) {
+    public SpravodlivostTrestneCiny(String okres, String rok, int pocetDodatocneObjasnenych, int pocetObjasnenych, int pocetZistenych) {
         this.okres = okres;
         this.rok = rok;
         this.pocetDodatocneObjasnenych = pocetDodatocneObjasnenych;
@@ -52,11 +52,11 @@ public class SpravodlivostTrestneCiny {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         SpravodlivostTrestneCiny that = (SpravodlivostTrestneCiny) o;
-        return getOkres().equals(that.getOkres()) &&
-                getRok().equals(that.getRok()) &&
-                getPocetDodatocneObjasnenych().equals(that.getPocetDodatocneObjasnenych()) &&
-                getPocetObjasnenych().equals(that.getPocetObjasnenych()) &&
-                getPocetZistenych().equals(that.getPocetZistenych());
+        return getPocetDodatocneObjasnenych() == that.getPocetDodatocneObjasnenych() &&
+                getPocetObjasnenych() == that.getPocetObjasnenych() &&
+                getPocetZistenych() == that.getPocetZistenych() &&
+                getOkres().equals(that.getOkres()) &&
+                getRok().equals(that.getRok());
     }
 
     @Override

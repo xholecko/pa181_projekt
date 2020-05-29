@@ -26,7 +26,9 @@ public class SocialneZariadeniaImport {
             SocialneZariadeniaDaoImpl dao = new SocialneZariadeniaDaoImpl(connectionSource);
             while ((line = br.readLine()) != null && !line.startsWith(";")){
                 String[] fields = line.split(cvsSplitBy);
-                SocialneZariadenia entity = new SocialneZariadenia(fields[0],fields[1],fields[2]);
+                SocialneZariadenia entity = new SocialneZariadenia(fields[0],
+                        fields[1].equals("") ? 0 : Integer.parseInt(fields[1].replaceAll("\\s+", "")),
+                        fields[2].equals("") ? 0 : Integer.parseInt(fields[2].replaceAll("\\s+", "")));
                 dao.createIfNotExists(entity);
             }
             br.close();

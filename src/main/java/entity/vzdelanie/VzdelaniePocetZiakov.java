@@ -31,15 +31,15 @@ public class VzdelaniePocetZiakov {
     private String mestskaCast;
 
     @DatabaseField(canBeNull = false)
-    private String rok;
+    private int rok;
 
     @DatabaseField(canBeNull = false)
-    private String pocetZiakov;
+    private int pocetZiakov;
 
     @DatabaseField(canBeNull = false)
     private String typ;
 
-    public VzdelaniePocetZiakov(String okres, String mestskaCast, String rok, String pocetZiakov, String typ) {
+    public VzdelaniePocetZiakov(String okres, String mestskaCast, int rok, int pocetZiakov, String typ) {
         this.okres = okres;
         this.mestskaCast = mestskaCast;
         this.rok = rok;
@@ -55,10 +55,10 @@ public class VzdelaniePocetZiakov {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         VzdelaniePocetZiakov that = (VzdelaniePocetZiakov) o;
-        return getOkres().equals(that.getOkres()) &&
+        return getRok() == that.getRok() &&
+                getPocetZiakov() == that.getPocetZiakov() &&
+                getOkres().equals(that.getOkres()) &&
                 getMestskaCast().equals(that.getMestskaCast()) &&
-                getRok().equals(that.getRok()) &&
-                getPocetZiakov().equals(that.getPocetZiakov()) &&
                 getTyp().equals(that.getTyp());
     }
 

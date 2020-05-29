@@ -9,6 +9,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.sql.SQLException;
+import java.text.NumberFormat;
+import java.text.ParseException;
+import java.util.Locale;
 
 /**
  * Class represents:
@@ -27,12 +30,16 @@ public class EkonomikaIndexStartnutiaImport {
 
             while ((line = br.readLine()) != null && !line.startsWith(";")){
                 String[] fields = line.split(cvsSplitBy);
-                EkonomikaIndexStartnutia entity = new EkonomikaIndexStartnutia(fields[0],fields[1],fields[2],fields[3]);
+                NumberFormat format = NumberFormat.getInstance(Locale.FRANCE);
+                Number number = format.parse(fields[3]);
+                double val = number.doubleValue();
+                EkonomikaIndexStartnutia entity = new EkonomikaIndexStartnutia(fields[0],fields[1],
+                        fields[2].equals("") ? 0 : Integer.parseInt(fields[2].replaceAll("\\s+", "")), val);
 
                 dao.createIfNotExists(entity);
             }
             br.close();
-        } catch (IOException | SQLException e) {
+        } catch (IOException | SQLException | ParseException e) {
             e.printStackTrace();
         }
     }

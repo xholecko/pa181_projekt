@@ -27,15 +27,15 @@ public class ObyvatelstvoPrirastok {
     private String mestskaCast;
 
     @DatabaseField(canBeNull = false)
-    private String rok;
+    private int rok;
 
     @DatabaseField(canBeNull = false)
-    private String mesiac;
+    private int mesiac;
 
     @DatabaseField(canBeNull = false)
-    private String prirastok;
+    private int prirastok;
 
-    public ObyvatelstvoPrirastok(String okres, String mestskaCast, String rok, String mesiac, String prirastok) {
+    public ObyvatelstvoPrirastok(String okres, String mestskaCast, int rok, int mesiac, int prirastok) {
         this.okres = okres;
         this.mestskaCast = mestskaCast;
         this.rok = rok;
@@ -51,11 +51,11 @@ public class ObyvatelstvoPrirastok {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ObyvatelstvoPrirastok that = (ObyvatelstvoPrirastok) o;
-        return getOkres().equals(that.getOkres()) &&
-                getMestskaCast().equals(that.getMestskaCast()) &&
-                getRok().equals(that.getRok()) &&
-                getMesiac().equals(that.getMesiac()) &&
-                getPrirastok().equals(that.getPrirastok());
+        return getRok() == that.getRok() &&
+                getMesiac() == that.getMesiac() &&
+                getPrirastok() == that.getPrirastok() &&
+                getOkres().equals(that.getOkres()) &&
+                getMestskaCast().equals(that.getMestskaCast());
     }
 
     @Override

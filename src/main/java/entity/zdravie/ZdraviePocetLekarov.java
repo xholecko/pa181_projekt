@@ -26,24 +26,24 @@ public class ZdraviePocetLekarov {
     private String mestskaCast;
 
     @DatabaseField(canBeNull = false)
-    private String rok;
+    private int rok;
 
     @DatabaseField(canBeNull = false)
-    private String lekarDospeli;
+    private int lekarDospeli;
 
     @DatabaseField(canBeNull = false)
-    private String lekarDeti;
+    private int lekarDeti;
 
     @DatabaseField(canBeNull = false)
-    private String stomatolog;
+    private int stomatolog;
 
     @DatabaseField(canBeNull = false)
-    private String gynekolog;
+    private int gynekolog;
 
     @DatabaseField(canBeNull = false)
-    private String specialista;
+    private int specialista;
 
-    public ZdraviePocetLekarov(String okres, String mestskaCast, String rok, String lekarDospeli, String lekarDeti, String stomatolog, String gynekolog, String specialista) {
+    public ZdraviePocetLekarov(String okres, String mestskaCast, int rok, int lekarDospeli, int lekarDeti, int stomatolog, int gynekolog, int specialista) {
         this.okres = okres;
         this.mestskaCast = mestskaCast;
         this.rok = rok;
@@ -62,14 +62,14 @@ public class ZdraviePocetLekarov {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ZdraviePocetLekarov that = (ZdraviePocetLekarov) o;
-        return getOkres().equals(that.getOkres()) &&
-                getMestskaCast().equals(that.getMestskaCast()) &&
-                getRok().equals(that.getRok()) &&
-                getLekarDospeli().equals(that.getLekarDospeli()) &&
-                getLekarDeti().equals(that.getLekarDeti()) &&
-                getStomatolog().equals(that.getStomatolog()) &&
-                getGynekolog().equals(that.getGynekolog()) &&
-                getSpecialista().equals(that.getSpecialista());
+        return getRok() == that.getRok() &&
+                getLekarDospeli() == that.getLekarDospeli() &&
+                getLekarDeti() == that.getLekarDeti() &&
+                getStomatolog() == that.getStomatolog() &&
+                getGynekolog() == that.getGynekolog() &&
+                getSpecialista() == that.getSpecialista() &&
+                getOkres().equals(that.getOkres()) &&
+                getMestskaCast().equals(that.getMestskaCast());
     }
 
     @Override

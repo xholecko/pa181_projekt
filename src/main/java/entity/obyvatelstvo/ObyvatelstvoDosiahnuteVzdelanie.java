@@ -30,18 +30,18 @@ public class ObyvatelstvoDosiahnuteVzdelanie {
     private String ulica;
 
     @DatabaseField(canBeNull = false)
-    private String pocetBakalarske;
+    private int pocetBakalarske;
 
     @DatabaseField(canBeNull = false)
-    private String pocetMgrIngDoctor;
+    private int pocetMgrIngDoctor;
 
     @DatabaseField(canBeNull = false)
-    private String pocetDoktorand;
+    private int pocetDoktorand;
 
     @DatabaseField(canBeNull = false)
-    private String pocetSpolu;
+    private int pocetSpolu;
 
-    public ObyvatelstvoDosiahnuteVzdelanie(String okres, String mestskaCast, String ulica, String pocetBakalarske, String pocetMgrIngDoctor, String pocetDoktorand, String pocetSpolu) {
+    public ObyvatelstvoDosiahnuteVzdelanie(String okres, String mestskaCast, String ulica, int pocetBakalarske, int pocetMgrIngDoctor, int pocetDoktorand, int pocetSpolu) {
         this.okres = okres;
         this.mestskaCast = mestskaCast;
         this.ulica = ulica;
@@ -59,13 +59,13 @@ public class ObyvatelstvoDosiahnuteVzdelanie {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ObyvatelstvoDosiahnuteVzdelanie that = (ObyvatelstvoDosiahnuteVzdelanie) o;
-        return getOkres().equals(that.getOkres()) &&
+        return getPocetBakalarske() == that.getPocetBakalarske() &&
+                getPocetMgrIngDoctor() == that.getPocetMgrIngDoctor() &&
+                getPocetDoktorand() == that.getPocetDoktorand() &&
+                getPocetSpolu() == that.getPocetSpolu() &&
+                getOkres().equals(that.getOkres()) &&
                 getMestskaCast().equals(that.getMestskaCast()) &&
-                getUlica().equals(that.getUlica()) &&
-                getPocetBakalarske().equals(that.getPocetBakalarske()) &&
-                getPocetMgrIngDoctor().equals(that.getPocetMgrIngDoctor()) &&
-                getPocetDoktorand().equals(that.getPocetDoktorand()) &&
-                getPocetSpolu().equals(that.getPocetSpolu());
+                getUlica().equals(that.getUlica());
     }
 
     @Override

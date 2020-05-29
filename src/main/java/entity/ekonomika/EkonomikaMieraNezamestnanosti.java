@@ -27,9 +27,9 @@ public class EkonomikaMieraNezamestnanosti {
     private String rok;
 
     @DatabaseField(canBeNull = false)
-    private String miera;
+    private double miera;
 
-    public EkonomikaMieraNezamestnanosti(String okres, String rok, String miera) {
+    public EkonomikaMieraNezamestnanosti(String okres, String rok, double miera) {
         this.okres = okres;
         this.rok = rok;
         this.miera = miera;
@@ -43,9 +43,9 @@ public class EkonomikaMieraNezamestnanosti {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         EkonomikaMieraNezamestnanosti that = (EkonomikaMieraNezamestnanosti) o;
-        return getOkres().equals(that.getOkres()) &&
-                getRok().equals(that.getRok()) &&
-                getMiera().equals(that.getMiera());
+        return Double.compare(that.getMiera(), getMiera()) == 0 &&
+                getOkres().equals(that.getOkres()) &&
+                getRok().equals(that.getRok());
     }
 
     @Override

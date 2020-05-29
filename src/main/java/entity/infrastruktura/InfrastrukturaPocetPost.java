@@ -27,12 +27,12 @@ public class InfrastrukturaPocetPost {
     private String mestskaCast;
 
     @DatabaseField(canBeNull = false)
-    private String rok;
+    private int rok;
 
     @DatabaseField(canBeNull = false)
-    private String pocetPost;
+    private int pocetPost;
 
-    public InfrastrukturaPocetPost(String okres, String mestskaCast, String rok, String pocetPost) {
+    public InfrastrukturaPocetPost(String okres, String mestskaCast, int rok, int pocetPost) {
         this.okres = okres;
         this.mestskaCast = mestskaCast;
         this.rok = rok;
@@ -47,15 +47,16 @@ public class InfrastrukturaPocetPost {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         InfrastrukturaPocetPost that = (InfrastrukturaPocetPost) o;
-        return getOkres().equals(that.getOkres()) &&
-                getMestskaCast().equals(that.getMestskaCast()) &&
-                getRok().equals(that.getRok()) &&
-                getPocetPost().equals(that.getPocetPost());
+        return getId() == that.getId() &&
+                getRok() == that.getRok() &&
+                getPocetPost() == that.getPocetPost() &&
+                getOkres().equals(that.getOkres()) &&
+                getMestskaCast().equals(that.getMestskaCast());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getOkres(), getMestskaCast(), getRok(), getPocetPost());
+        return Objects.hash(getId(), getOkres(), getMestskaCast(), getRok(), getPocetPost());
     }
 
     @Override

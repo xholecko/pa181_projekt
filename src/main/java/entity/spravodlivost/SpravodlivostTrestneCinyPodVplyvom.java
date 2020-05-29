@@ -24,22 +24,22 @@ public class SpravodlivostTrestneCinyPodVplyvom {
     @DatabaseField(canBeNull = false)
     private String okres;
 
-    @DatabaseField(canBeNull = false)
+    @DatabaseField(canBeNull = false) // Rok je aj v inom formate ako int (01/2018 - 06/2018)
     private String rok;
 
     @DatabaseField(canBeNull = false)
-    private String pocetTrestnychCinovAlkohol;
+    private int pocetTrestnychCinovAlkohol;
 
     @DatabaseField(canBeNull = false)
-    private String pocetTrestnychCinovDrogy;
+    private int pocetTrestnychCinovDrogy;
 
     @DatabaseField(canBeNull = false)
-    private String pocetStihanychAlkohol;
+    private int pocetStihanychAlkohol;
 
     @DatabaseField(canBeNull = false)
-    private String pocetStihanychDrogy;
+    private int pocetStihanychDrogy;
 
-    public SpravodlivostTrestneCinyPodVplyvom(String okres, String rok, String pocetTrestnychCinovAlkohol, String pocetTrestnychCinovDrogy, String pocetStihanychAlkohol, String pocetStihanychDrogy) {
+    public SpravodlivostTrestneCinyPodVplyvom(String okres, String rok, int pocetTrestnychCinovAlkohol, int pocetTrestnychCinovDrogy, int pocetStihanychAlkohol, int pocetStihanychDrogy) {
         this.okres = okres;
         this.rok = rok;
         this.pocetTrestnychCinovAlkohol = pocetTrestnychCinovAlkohol;
@@ -56,12 +56,12 @@ public class SpravodlivostTrestneCinyPodVplyvom {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         SpravodlivostTrestneCinyPodVplyvom that = (SpravodlivostTrestneCinyPodVplyvom) o;
-        return getOkres().equals(that.getOkres()) &&
-                getRok().equals(that.getRok()) &&
-                getPocetTrestnychCinovAlkohol().equals(that.getPocetTrestnychCinovAlkohol()) &&
-                getPocetTrestnychCinovDrogy().equals(that.getPocetTrestnychCinovDrogy()) &&
-                getPocetStihanychAlkohol().equals(that.getPocetStihanychAlkohol()) &&
-                getPocetStihanychDrogy().equals(that.getPocetStihanychDrogy());
+        return getPocetTrestnychCinovAlkohol() == that.getPocetTrestnychCinovAlkohol() &&
+                getPocetTrestnychCinovDrogy() == that.getPocetTrestnychCinovDrogy() &&
+                getPocetStihanychAlkohol() == that.getPocetStihanychAlkohol() &&
+                getPocetStihanychDrogy() == that.getPocetStihanychDrogy() &&
+                getOkres().equals(that.getOkres()) &&
+                getRok().equals(that.getRok());
     }
 
     @Override

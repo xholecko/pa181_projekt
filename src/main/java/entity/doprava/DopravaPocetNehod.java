@@ -43,15 +43,14 @@ public class DopravaPocetNehod {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         DopravaPocetNehod that = (DopravaPocetNehod) o;
-        return getId() == that.getId() &&
-                getRok() == that.getRok() &&
+        return getRok() == that.getRok() &&
                 getPocetNehod() == that.getPocetNehod() &&
                 getOkres().equals(that.getOkres());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getOkres(), getRok(), getPocetNehod());
+        return Objects.hash(getOkres(), getRok(), getPocetNehod());
     }
 
     @Override

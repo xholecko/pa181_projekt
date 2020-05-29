@@ -27,8 +27,15 @@ public class ObyvatelstvoVierovyznanieImport {
             ObyvatelstvoVierovyznanieDaoImpl dao = new ObyvatelstvoVierovyznanieDaoImpl(connectionSource);
             while ((line = br.readLine()) != null && !line.startsWith(";")){
                 String[] fields = line.split(cvsSplitBy);
-                String ine = calculateIne(fields);
-                ObyvatelstvoVierovyznanie entity = new ObyvatelstvoVierovyznanie(fields[3],fields[5],fields[8],fields[9],fields[10],fields[20],ine,fields[27],fields[29]);
+                int ineVyznania = calculateIne(fields);
+                ObyvatelstvoVierovyznanie entity = new ObyvatelstvoVierovyznanie(fields[3],fields[5],
+                        fields[8].equals("") ? 0 : Integer.parseInt(fields[8].replaceAll("\\s+", "")),
+                        fields[9].equals("") ? 0 : Integer.parseInt(fields[9].replaceAll("\\s+", "")),
+                        fields[10].equals("") ? 0 : Integer.parseInt(fields[10].replaceAll("\\s+", "")),
+                        fields[20].equals("") ? 0 : Integer.parseInt(fields[20].replaceAll("\\s+", "")),
+                        ineVyznania,
+                        fields[27].equals("") ? 0 : Integer.parseInt(fields[27].replaceAll("\\s+", "")),
+                        fields[29].equals("") ? 0 : Integer.parseInt(fields[29].replaceAll("\\s+", "")));
                 dao.createIfNotExists(entity);
             }
             br.close();
@@ -36,8 +43,8 @@ public class ObyvatelstvoVierovyznanieImport {
             e.printStackTrace();
         }
     }
-    private String calculateIne(String[] fields){
-        Integer val = 0;
+    private int calculateIne(String[] fields){
+        int val = 0;
         for (int i = 11; i < fields.length - 1; i++){
             if (i != 27 && i != 20) {
                 if (fields[i] != null && !fields[i].equals("")) {
@@ -45,7 +52,7 @@ public class ObyvatelstvoVierovyznanieImport {
                 }
             }
         }
-        return val.toString();
+        return val;
 
     }
 }

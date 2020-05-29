@@ -9,6 +9,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.sql.SQLException;
+import java.text.NumberFormat;
+import java.text.ParseException;
+import java.util.Locale;
 
 
 /**
@@ -28,11 +31,17 @@ public class EkonomikaMieraNezamestnanostiImport {
             EkonomikaMieraNezamestnanostiDaoImpl dao = new EkonomikaMieraNezamestnanostiDaoImpl(connectionSource);
             while ((line = br.readLine()) != null && !line.startsWith(";")){
                 String[] fields = line.split(cvsSplitBy);
-                EkonomikaMieraNezamestnanosti entity = new EkonomikaMieraNezamestnanosti(fields[0],fields[1],fields[2]);
+//                if (!fields[2].contains(",")){
+//                    fields[2] += ",00";
+//                }
+                NumberFormat format = NumberFormat.getInstance(Locale.FRANCE);
+                Number number = format.parse(fields[2]);
+                double val = number.doubleValue();
+                EkonomikaMieraNezamestnanosti entity = new EkonomikaMieraNezamestnanosti(fields[0],fields[1],val);
                 dao.createIfNotExists(entity);
             }
             br.close();
-        } catch (IOException | SQLException e) {
+        } catch (IOException | SQLException | ParseException e) {
             e.printStackTrace();
         }
     }
