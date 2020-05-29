@@ -1,0 +1,5 @@
+package enums;
+
+public enum TypZariadeni {
+    DIVADLO,GALERIA,MUZEUM,KINO,VOLNY_CAS_MLADEZ,VEDECKA_KNIZNICA,VEREJNA_KNIZNICA
+}
