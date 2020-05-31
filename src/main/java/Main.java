@@ -1,7 +1,9 @@
 import com.j256.ormlite.jdbc.JdbcPooledConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 import dao.doprava.DopravaPocetNehodDaoImpl;
+import dao.ekonomika.EkonomikaCenyBytovDaoImpl;
 import entity.doprava.DopravaPocetNehod;
+import entity.ekonomika.EkonomikaCenyBytov;
 import entity.ekonomika.EkonomikaIndexStartnutia;
 import entity.ekonomika.EkonomikaMieraNezamestnanosti;
 import entity.infrastruktura.InfrastrukturaPocetPost;
@@ -21,6 +23,7 @@ import entity.zdravie.ZdraviePocetLekarov;
 import entity.zdravie.ZdraviePocetNemocnic;
 import entity.zdravie.ZdraviePocetPoliklinik;
 import loadData.doprava.DopravaPocetNehodImport;
+import loadData.ekonomika.EkonomikaCenyBytovImport;
 import loadData.ekonomika.EkonomikaIndexStartnutiaImport;
 import loadData.ekonomika.EkonomikaMieraNezamestnanostiImport;
 import loadData.infrastruktura.InfrastrukturaPocetPostImport;
@@ -53,7 +56,6 @@ public class Main {
     public static void main(String[] args) throws SQLException, IOException {
         JdbcPooledConnectionSource connectionSource
                 = new JdbcPooledConnectionSource("jdbc:h2:mem:myDb");
-
         loadDoprava(connectionSource);
         loadEkonomika(connectionSource);
         loadKultura(connectionSource);
@@ -63,21 +65,23 @@ public class Main {
         loadVzdelania(connectionSource);
         loadSpravodlivost(connectionSource);
         loadZdravie(connectionSource);
-        setDB(connectionSource);
+        testDb(connectionSource);
         System.out.println("OK");
-
         connectionSource.close();
     }
 
-    private static void setDB(JdbcPooledConnectionSource connectionSource) throws SQLException {
-        DopravaPocetNehodDaoImpl dopravaPocetNehods = new DopravaPocetNehodDaoImpl(connectionSource);
 
-        List<DopravaPocetNehod> list = dopravaPocetNehods.findByRokVacsiRovny(2017);
-        List<DopravaPocetNehod> list2 = dopravaPocetNehods.queryForAll();
+
+    private static void testDb(JdbcPooledConnectionSource connectionSource) throws SQLException {
+        DopravaPocetNehodDaoImpl dopravaPocetNehodDao = new DopravaPocetNehodDaoImpl(connectionSource);
+        EkonomikaCenyBytovDaoImpl ekonomikaCenyBytovDao = new EkonomikaCenyBytovDaoImpl(connectionSource);
+
+
+        List<DopravaPocetNehod> list = dopravaPocetNehodDao.findByRokVacsiRovny(2017);
+        List<EkonomikaCenyBytov> list2 = ekonomikaCenyBytovDao.queryForAll();
 
         System.out.println(list);
         System.out.println(list2);
-
     }
 
     private static void loadDoprava(JdbcPooledConnectionSource connectionSource) throws SQLException {
@@ -94,6 +98,10 @@ public class Main {
         TableUtils.createTableIfNotExists(connectionSource, EkonomikaMieraNezamestnanosti.class);
         EkonomikaMieraNezamestnanostiImport ekonomikaMieraNezamestnanostiImport = new EkonomikaMieraNezamestnanostiImport();
         ekonomikaMieraNezamestnanostiImport.getEkonomikaMieraNezamestnanosti(connectionSource);
+
+        TableUtils.createTableIfNotExists(connectionSource, EkonomikaCenyBytov.class);
+        EkonomikaCenyBytovImport ekonomikaCenyBytovImport = new EkonomikaCenyBytovImport();
+        ekonomikaCenyBytovImport.getEkonomikaCenyBytov(connectionSource);
     }
     private static void loadInfrastruktura(JdbcPooledConnectionSource connectionSource) throws SQLException {
         TableUtils.createTableIfNotExists(connectionSource, InfrastrukturaPocetPost.class);
