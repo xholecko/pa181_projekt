@@ -5,6 +5,8 @@ import com.j256.ormlite.support.ConnectionSource;
 import entity.kultura.KulturaPamatihodnosti;
 
 import java.sql.SQLException;
+import java.util.List;
+
 /**
  * Class represents:
  * @author xholecko
@@ -12,5 +14,10 @@ import java.sql.SQLException;
 public class KulturaPamatihodnostiDaoImpl extends BaseDaoImpl<KulturaPamatihodnosti, Long> implements KulturaPamatihodnostiDao {
     public KulturaPamatihodnostiDaoImpl(ConnectionSource connectionSource) throws SQLException {
         super(connectionSource, KulturaPamatihodnosti.class);
+    }
+    @Override
+    public List<String[]> getPamatihodnostiByOkres() throws SQLException {
+        //TODO
+        return null;
     }
 }

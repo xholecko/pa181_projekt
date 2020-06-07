@@ -1,7 +1,25 @@
+import com.j256.ormlite.dao.GenericRawResults;
 import com.j256.ormlite.jdbc.JdbcPooledConnectionSource;
+import com.j256.ormlite.stmt.PreparedQuery;
 import com.j256.ormlite.table.TableUtils;
 import dao.doprava.DopravaPocetNehodDaoImpl;
 import dao.ekonomika.EkonomikaCenyBytovDaoImpl;
+import dao.ekonomika.EkonomikaIndexStartnutiaDaoImpl;
+import dao.ekonomika.EkonomikaMieraNezamestnanostiDaoImpl;
+import dao.infrastruktura.InfrastrukturaPocetPostDaoImpl;
+import dao.kultura.KulturaPocetZariadeniDaoImpl;
+import dao.obyvatelstvo.ObyvatelstvoDosiahnuteVzdelanieDaoImpl;
+import dao.obyvatelstvo.ObyvatelstvoPocetDaoImpl;
+import dao.obyvatelstvo.ObyvatelstvoPrirastokDaoImpl;
+import dao.obyvatelstvo.ObyvatelstvoVierovyznanieDaoImpl;
+import dao.socialne.SocialneZariadeniaDaoImpl;
+import dao.spravodlivost.SpravodlivostTrestneCinyDaoImpl;
+import dao.spravodlivost.SpravodlivostTrestneCinyPodVplyvomDaoImpl;
+import dao.vzdelanie.VzdelanieInternatyVSDaoImpl;
+import dao.vzdelanie.VzdelaniePocetZiakovDaoImpl;
+import dao.zdravie.ZdraviePocetLekarovDaoImpl;
+import dao.zdravie.ZdraviePocetNemocnicDaoImpl;
+import dao.zdravie.ZdraviePocetPoliklinikDaoImpl;
 import entity.doprava.DopravaPocetNehod;
 import entity.ekonomika.EkonomikaCenyBytov;
 import entity.ekonomika.EkonomikaIndexStartnutia;
@@ -22,6 +40,8 @@ import entity.vzdelanie.VzdelaniePocetZiakov;
 import entity.zdravie.ZdraviePocetLekarov;
 import entity.zdravie.ZdraviePocetNemocnic;
 import entity.zdravie.ZdraviePocetPoliklinik;
+import enums.TypSkoly;
+import enums.TypZariadeni;
 import loadData.doprava.DopravaPocetNehodImport;
 import loadData.ekonomika.EkonomikaCenyBytovImport;
 import loadData.ekonomika.EkonomikaIndexStartnutiaImport;
@@ -46,6 +66,7 @@ import loadData.zdravie.ZdraviePocetPoliklinikImport;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Class represents: Main Class
@@ -58,12 +79,12 @@ public class Main {
                 = new JdbcPooledConnectionSource("jdbc:h2:mem:myDb");
         loadDoprava(connectionSource);
         loadEkonomika(connectionSource);
+        loadInfrastruktura(connectionSource);
         loadKultura(connectionSource);
         loadObyvatelstvo(connectionSource);
         loadSocialne(connectionSource);
-        loadInfrastruktura(connectionSource);
-        loadVzdelania(connectionSource);
         loadSpravodlivost(connectionSource);
+        loadVzdelania(connectionSource);
         loadZdravie(connectionSource);
         testDb(connectionSource);
         System.out.println("OK");
@@ -73,15 +94,20 @@ public class Main {
 
 
     private static void testDb(JdbcPooledConnectionSource connectionSource) throws SQLException {
-        DopravaPocetNehodDaoImpl dopravaPocetNehodDao = new DopravaPocetNehodDaoImpl(connectionSource);
-        EkonomikaCenyBytovDaoImpl ekonomikaCenyBytovDao = new EkonomikaCenyBytovDaoImpl(connectionSource);
+        ZdraviePocetNemocnicDaoImpl dao = new ZdraviePocetNemocnicDaoImpl(connectionSource);
+
+        //kazda implementovana metoda v DAO vrati pri zadani validnych parametrov zoradeny zoznam o velkosti 5
+        //napr v tomto pripade to vrati {[" Bratislava II","6"],[" Bratislava I","5"],[" Bratislava III","4"],[" Bratislava V","2"],[" Bratislava IV","0"]}
+        List<String[]> tmp = dao.getPocetNemocnicByOkres(2017);
+
+        String okres = tmp.get(0)[0]; // " Bratislava II"
+        String hodnota = tmp.get(0)[1]; // "6"
 
 
-        List<DopravaPocetNehod> list = dopravaPocetNehodDao.findByRokVacsiRovny(2017);
-        List<EkonomikaCenyBytov> list2 = ekonomikaCenyBytovDao.queryForAll();
 
-        System.out.println(list);
-        System.out.println(list2);
+        System.out.println(tmp);
+        System.out.println(okres);
+        System.out.println(hodnota);
     }
 
     private static void loadDoprava(JdbcPooledConnectionSource connectionSource) throws SQLException {
