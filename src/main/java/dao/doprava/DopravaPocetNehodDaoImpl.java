@@ -1,11 +1,15 @@
 package dao.doprava;
 
 import com.j256.ormlite.dao.BaseDaoImpl;
+import com.j256.ormlite.dao.GenericRawResults;
+import com.j256.ormlite.stmt.PreparedQuery;
 import com.j256.ormlite.support.ConnectionSource;
 import entity.doprava.DopravaPocetNehod;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
+
 /**
  * Class represents:
  * @author xholecko
@@ -26,7 +30,11 @@ public class DopravaPocetNehodDaoImpl extends BaseDaoImpl<DopravaPocetNehod, Lon
     }
 
     @Override
-    public List<DopravaPocetNehod> findByRokVacsiRovny(int rok) throws SQLException {
-        return super.query(super.queryBuilder().where().ge("rok",rok).prepare());
+    public List<String[]> getPocetNehodByOkres(int rok) throws SQLException{
+        return super.queryBuilder().selectRaw("okres").selectRaw("SUM (pocetNehod) as pocetNehods")
+                .groupBy("okres")
+                .orderByRaw("pocetNehods")
+                .where().ge("rok",rok)
+                .queryRaw().getResults();
     }
 }

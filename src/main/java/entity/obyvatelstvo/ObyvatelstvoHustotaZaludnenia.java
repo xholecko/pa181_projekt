@@ -5,5 +5,5 @@ package entity.obyvatelstvo;
  * @author xholecko
  */
 public class ObyvatelstvoHustotaZaludnenia {
-    //TODO
+    //TODO???
 }

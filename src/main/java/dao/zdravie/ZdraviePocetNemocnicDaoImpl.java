@@ -5,6 +5,8 @@ import com.j256.ormlite.support.ConnectionSource;
 import entity.zdravie.ZdraviePocetNemocnic;
 
 import java.sql.SQLException;
+import java.util.List;
+
 /**
  * Class represents:
  * @author xholecko
@@ -12,5 +14,14 @@ import java.sql.SQLException;
 public class ZdraviePocetNemocnicDaoImpl extends BaseDaoImpl<ZdraviePocetNemocnic, Long> implements ZdraviePocetNemocnicDao {
     public ZdraviePocetNemocnicDaoImpl(ConnectionSource connectionSource) throws SQLException {
         super(connectionSource, ZdraviePocetNemocnic.class);
+    }
+
+    @Override
+    public List<String[]> getPocetNemocnicByOkres(int rok) throws SQLException {
+        return super.queryBuilder().selectRaw("okres").selectRaw("SUM (pocetNemocnic) as pocetNemocnics")
+                .groupBy("okres")
+                .orderByRaw("pocetNemocnics DESC")
+                .where().eq("rok",rok)
+                .queryRaw().getResults();
     }
 }

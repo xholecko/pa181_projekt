@@ -5,6 +5,8 @@ import com.j256.ormlite.support.ConnectionSource;
 import entity.obyvatelstvo.ObyvatelstvoDosiahnuteVzdelanie;
 
 import java.sql.SQLException;
+import java.util.List;
+
 /**
  * Class represents:
  * @author xholecko
@@ -12,5 +14,13 @@ import java.sql.SQLException;
 public class ObyvatelstvoDosiahnuteVzdelanieDaoImpl extends BaseDaoImpl<ObyvatelstvoDosiahnuteVzdelanie, Long> implements ObyvatelstvoDosiahnuteVzdelanieDao {
     public ObyvatelstvoDosiahnuteVzdelanieDaoImpl(ConnectionSource connectionSource) throws SQLException {
         super(connectionSource, ObyvatelstvoDosiahnuteVzdelanie.class);
+    }
+
+    @Override
+    public List<String[]> getDosiahnuteVzdelanieSpoluByOkres() throws SQLException {
+        return super.queryBuilder().selectRaw("okres").selectRaw("SUM (pocetSpolu) as pocetSpolus")
+                .groupBy("okres")
+                .orderByRaw("pocetSpolus DESC")
+                .queryRaw().getResults();
     }
 }

@@ -15,6 +15,12 @@ public interface DopravaPocetNehodDao extends Dao<DopravaPocetNehod, Long> {
 
     List<DopravaPocetNehod> findByRok(int rok) throws SQLException;
 
-    List<DopravaPocetNehod> findByRokVacsiRovny(int rok) throws SQLException;
+    /**
+     *
+     * @param rok rok (hodnoty od 2012 - 2018) hodnoty vacsie alebo rovne ako zadany rok
+     * @return zoradeny list casti bratislavy od casti ktora ma najmenej nehod po tu cast ktora ma najviac nehod za dane obdobie
+     * @throws SQLException e
+     */
+    List<String[]> getPocetNehodByOkres(int rok) throws SQLException;
 
 }

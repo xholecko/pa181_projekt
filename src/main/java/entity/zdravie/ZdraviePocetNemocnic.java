@@ -29,13 +29,13 @@ public class ZdraviePocetNemocnic {
     private int rok;
 
     @DatabaseField(canBeNull = false)
-    private int pocetPoliklinik;
+    private int pocetNemocnic;
 
-    public ZdraviePocetNemocnic(String okres, String mestskaCast, int rok, int pocetPoliklinik) {
+    public ZdraviePocetNemocnic(String okres, String mestskaCast, int rok, int pocetNemocnic) {
         this.okres = okres;
         this.mestskaCast = mestskaCast;
         this.rok = rok;
-        this.pocetPoliklinik = pocetPoliklinik;
+        this.pocetNemocnic = pocetNemocnic;
     }
 
     public ZdraviePocetNemocnic() {
@@ -47,14 +47,14 @@ public class ZdraviePocetNemocnic {
         if (o == null || getClass() != o.getClass()) return false;
         ZdraviePocetNemocnic that = (ZdraviePocetNemocnic) o;
         return getRok() == that.getRok() &&
-                getPocetPoliklinik() == that.getPocetPoliklinik() &&
+                getPocetNemocnic() == that.getPocetNemocnic() &&
                 getOkres().equals(that.getOkres()) &&
                 getMestskaCast().equals(that.getMestskaCast());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getOkres(), getMestskaCast(), getRok(), getPocetPoliklinik());
+        return Objects.hash(getOkres(), getMestskaCast(), getRok(), getPocetNemocnic());
     }
 
     @Override
@@ -64,7 +64,7 @@ public class ZdraviePocetNemocnic {
                 ", okres='" + okres + '\'' +
                 ", mestskaCast='" + mestskaCast + '\'' +
                 ", rok='" + rok + '\'' +
-                ", pocetPoliklinik='" + pocetPoliklinik + '\'' +
+                ", pocetPoliklinik='" + pocetNemocnic + '\'' +
                 '}';
     }
 }

@@ -90,13 +90,13 @@ public class ObyvatelstvoVierovyznanie {
                 "id=" + id +
                 ", okres='" + okres + '\'' +
                 ", mestskaCast='" + mestskaCast + '\'' +
-                ", rimskokatolici='" + rimskokatolici + '\'' +
-                ", evanjelici='" + evanjelici + '\'' +
-                ", greckokatolici='" + greckokatolici + '\'' +
-                ", zidia='" + zidia + '\'' +
-                ", ine='" + ine + '\'' +
-                ", ateisti='" + ateisti + '\'' +
-                ", spolu='" + spolu + '\'' +
+                ", rimskokatolici=" + rimskokatolici +
+                ", evanjelici=" + evanjelici +
+                ", greckokatolici=" + greckokatolici +
+                ", zidia=" + zidia +
+                ", ine=" + ine +
+                ", ateisti=" + ateisti +
+                ", spolu=" + spolu +
                 '}';
     }
 }

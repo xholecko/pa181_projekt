@@ -5,6 +5,8 @@ import com.j256.ormlite.support.ConnectionSource;
 import entity.obyvatelstvo.ObyvatelstvoPrirastok;
 
 import java.sql.SQLException;
+import java.util.List;
+
 /**
  * Class represents:
  * @author xholecko
@@ -12,5 +14,15 @@ import java.sql.SQLException;
 public class ObyvatelstvoPrirastokDaoImpl extends BaseDaoImpl<ObyvatelstvoPrirastok, Long> implements ObyvatelstvoPrirastokDao {
     public ObyvatelstvoPrirastokDaoImpl(ConnectionSource connectionSource) throws SQLException {
         super(connectionSource, ObyvatelstvoPrirastok.class);
+    }
+
+    @Override
+    public List<String[]> getPrirastokByOkres(int rok) throws SQLException {
+
+        return super.queryBuilder().selectRaw("okres").selectRaw("SUM (prirastok) as prirastoks")
+                .groupBy("okres")
+                .orderByRaw("prirastoks DESC")
+                .where().eq("rok",rok)
+                .queryRaw().getResults();
     }
 }
