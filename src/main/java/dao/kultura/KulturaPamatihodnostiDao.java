@@ -17,5 +17,6 @@ public interface KulturaPamatihodnostiDao extends Dao<KulturaPamatihodnosti, Lon
      * @return zoradeny list casti bratislavy od casti ktora ma najviac pamatihodnosti po cast ktora ma najmenej
      * @throws SQLException e
      */
-    List<String[]> getPamatihodnostiByOkres() throws SQLException;
+    List<String[]> getPamatihodnostiByRok() throws SQLException;
+    //TODO
 }

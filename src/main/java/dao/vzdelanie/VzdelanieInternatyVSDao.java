@@ -20,7 +20,7 @@ public interface VzdelanieInternatyVSDao extends Dao<VzdelanieInternatyVS,Long> 
      * @return zoradeny list casti bratislavy podla poctu lozok na internatoch od najvacsieho po najmensi
      * @throws SQLException e
      */
-    List<String[]> getPocetLozokByOkres(int rok) throws SQLException;
+    List<String[]> getPocetLozokByRok(int rok) throws SQLException;
 
 
     /**
@@ -29,5 +29,5 @@ public interface VzdelanieInternatyVSDao extends Dao<VzdelanieInternatyVS,Long> 
      * @return zoradeny list casti bratislavy podla poctu internatov od najvacsieho po najmensi
      * @throws SQLException e
      */
-    List<String[]> getPocetInternatovByOkres(int rok) throws SQLException;
+    List<String[]> getPocetInternatovByRok(int rok) throws SQLException;
 }

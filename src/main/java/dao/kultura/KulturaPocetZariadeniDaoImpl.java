@@ -18,7 +18,7 @@ public class KulturaPocetZariadeniDaoImpl extends BaseDaoImpl<KulturaPocetZariad
     }
 
     @Override
-    public List<String[]> getPocetZariadeniByOkres(int rok, TypZariadeni typZariadeni) throws SQLException {
+    public List<String[]> getPocetZariadeniByRokATypZariadenia(int rok, TypZariadeni typZariadeni) throws SQLException {
         return super.queryBuilder().selectRaw("okres").selectRaw("SUM (pocetZariadeni) as pocetZariadenis")
                 .groupBy("okres")
                 .orderByRaw("pocetZariadenis DESC")

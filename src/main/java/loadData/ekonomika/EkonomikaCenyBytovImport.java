@@ -25,11 +25,11 @@ public class EkonomikaCenyBytovImport {
 
     public void getEkonomikaCenyBytov(JdbcPooledConnectionSource connectionSource){
         HashMap<String, String> maps = new HashMap<>();
-        maps.put("Bratislava 1",URL_BLAVA1);
-        maps.put("Bratislava 2",URL_BLAVA2);
-        maps.put("Bratislava 3",URL_BLAVA3);
-        maps.put("Bratislava 4",URL_BLAVA4);
-        maps.put("Bratislava 5",URL_BLAVA5);
+        maps.put("BratislavaI",URL_BLAVA1);
+        maps.put("BratislavaII",URL_BLAVA2);
+        maps.put("BratislavaIII",URL_BLAVA3);
+        maps.put("BratislavaIV",URL_BLAVA4);
+        maps.put("BratislavaV",URL_BLAVA5);
 
         try {
             EkonomikaCenyBytovDaoImpl dao = new EkonomikaCenyBytovDaoImpl(connectionSource);

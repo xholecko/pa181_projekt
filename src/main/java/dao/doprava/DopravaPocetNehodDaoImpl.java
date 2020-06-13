@@ -30,7 +30,7 @@ public class DopravaPocetNehodDaoImpl extends BaseDaoImpl<DopravaPocetNehod, Lon
     }
 
     @Override
-    public List<String[]> getPocetNehodByOkres(int rok) throws SQLException{
+    public List<String[]> getPocetNehodByRok(int rok) throws SQLException{
         return super.queryBuilder().selectRaw("okres").selectRaw("SUM (pocetNehod) as pocetNehods")
                 .groupBy("okres")
                 .orderByRaw("pocetNehods")

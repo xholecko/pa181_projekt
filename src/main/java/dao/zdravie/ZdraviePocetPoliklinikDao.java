@@ -18,5 +18,5 @@ public interface ZdraviePocetPoliklinikDao extends Dao<ZdraviePocetPoliklinik,Lo
      * @return zoradeny list casti bratislavy podla poctu poliklinik od najviac po najmenej
      * @throws SQLException e
      */
-    List<String[]> getPocetPoliklinkByOkres(int rok) throws SQLException;
+    List<String[]> getPocetPoliklinkByRok(int rok) throws SQLException;
 }

@@ -37,7 +37,8 @@ public class EkonomikaMieraNezamestnanostiImport {
                 NumberFormat format = NumberFormat.getInstance(Locale.FRANCE);
                 Number number = format.parse(fields[2]);
                 double val = number.doubleValue();
-                EkonomikaMieraNezamestnanosti entity = new EkonomikaMieraNezamestnanosti(fields[0],fields[1],val);
+                EkonomikaMieraNezamestnanosti entity = new EkonomikaMieraNezamestnanosti(
+                        fields[0].replaceAll("\\s+",""),fields[1],val);
                 dao.createIfNotExists(entity);
             }
             br.close();

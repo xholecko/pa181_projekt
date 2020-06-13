@@ -16,7 +16,7 @@ public class KulturaPamatihodnostiDaoImpl extends BaseDaoImpl<KulturaPamatihodno
         super(connectionSource, KulturaPamatihodnosti.class);
     }
     @Override
-    public List<String[]> getPamatihodnostiByOkres() throws SQLException {
+    public List<String[]> getPamatihodnostiByRok() throws SQLException {
         //TODO
         return null;
     }

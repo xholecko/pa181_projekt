@@ -26,7 +26,8 @@ public class InfrastrukturaPocetPostImport {
             InfrastrukturaPocetPostDaoImpl dao = new InfrastrukturaPocetPostDaoImpl(connectionSource);
             while ((line = br.readLine()) != null && !line.startsWith(";")){
                 String[] fields = line.split(cvsSplitBy);
-                InfrastrukturaPocetPost entity = new InfrastrukturaPocetPost(fields[0],fields[1],
+                InfrastrukturaPocetPost entity = new InfrastrukturaPocetPost(
+                        fields[0].replaceAll("\\s+",""), fields[1],
                         fields[2].equals("") ? 0 : Integer.parseInt(fields[2].replaceAll("\\s+", "")),
                         fields[3].equals("") ? 0 : Integer.parseInt(fields[3].replaceAll("\\s+", "")));
                 dao.createIfNotExists(entity);

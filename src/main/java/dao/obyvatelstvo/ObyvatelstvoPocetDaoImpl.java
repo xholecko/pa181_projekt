@@ -17,7 +17,7 @@ public class ObyvatelstvoPocetDaoImpl extends BaseDaoImpl<ObyvatelstvoPocet, Lon
     }
 
     @Override
-    public List<String[]> getPocetObyvatelovByOkres(int rok) throws SQLException {
+    public List<String[]> getPocetObyvatelovByRok(int rok) throws SQLException {
         return super.queryBuilder().selectRaw("okres").selectRaw("AVG (prirastok) as prirastoks")
                 .groupBy("okres")
                 .orderByRaw("prirastoks")

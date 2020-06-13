@@ -17,7 +17,7 @@ public class ObyvatelstvoDosiahnuteVzdelanieDaoImpl extends BaseDaoImpl<Obyvatel
     }
 
     @Override
-    public List<String[]> getDosiahnuteVzdelanieSpoluByOkres() throws SQLException {
+    public List<String[]> getDosiahnuteVzdelanieSpoluByRok() throws SQLException {
         return super.queryBuilder().selectRaw("okres").selectRaw("SUM (pocetSpolu) as pocetSpolus")
                 .groupBy("okres")
                 .orderByRaw("pocetSpolus DESC")

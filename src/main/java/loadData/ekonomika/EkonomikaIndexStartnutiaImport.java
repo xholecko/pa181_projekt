@@ -33,7 +33,7 @@ public class EkonomikaIndexStartnutiaImport {
                 NumberFormat format = NumberFormat.getInstance(Locale.FRANCE);
                 Number number = format.parse(fields[3]);
                 double val = number.doubleValue();
-                EkonomikaIndexStartnutia entity = new EkonomikaIndexStartnutia(fields[0],fields[1],
+                EkonomikaIndexStartnutia entity = new EkonomikaIndexStartnutia(fields[0].replaceAll("\\s+",""),fields[1],
                         fields[2].equals("") ? 0 : Integer.parseInt(fields[2].replaceAll("\\s+", "")), val);
 
                 dao.createIfNotExists(entity);

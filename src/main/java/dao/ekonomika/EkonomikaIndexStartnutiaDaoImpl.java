@@ -17,7 +17,7 @@ public class EkonomikaIndexStartnutiaDaoImpl  extends BaseDaoImpl<EkonomikaIndex
     }
 
     @Override
-    public List<String[]> getIndexStarnutiaByOkres(int rok) throws SQLException{
+    public List<String[]> getIndexStarnutiaByRok(int rok) throws SQLException{
         return super.queryBuilder().selectRaw("okres").selectRaw("AVG (indexStarnutia) as indexStarnutias")
                 .groupBy("okres")
                 .orderByRaw("indexStarnutias")

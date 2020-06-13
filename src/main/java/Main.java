@@ -1,25 +1,13 @@
-import com.j256.ormlite.dao.GenericRawResults;
 import com.j256.ormlite.jdbc.JdbcPooledConnectionSource;
-import com.j256.ormlite.stmt.PreparedQuery;
 import com.j256.ormlite.table.TableUtils;
-import dao.doprava.DopravaPocetNehodDaoImpl;
 import dao.ekonomika.EkonomikaCenyBytovDaoImpl;
 import dao.ekonomika.EkonomikaIndexStartnutiaDaoImpl;
-import dao.ekonomika.EkonomikaMieraNezamestnanostiDaoImpl;
 import dao.infrastruktura.InfrastrukturaPocetPostDaoImpl;
 import dao.kultura.KulturaPocetZariadeniDaoImpl;
-import dao.obyvatelstvo.ObyvatelstvoDosiahnuteVzdelanieDaoImpl;
-import dao.obyvatelstvo.ObyvatelstvoPocetDaoImpl;
-import dao.obyvatelstvo.ObyvatelstvoPrirastokDaoImpl;
-import dao.obyvatelstvo.ObyvatelstvoVierovyznanieDaoImpl;
-import dao.socialne.SocialneZariadeniaDaoImpl;
-import dao.spravodlivost.SpravodlivostTrestneCinyDaoImpl;
 import dao.spravodlivost.SpravodlivostTrestneCinyPodVplyvomDaoImpl;
 import dao.vzdelanie.VzdelanieInternatyVSDaoImpl;
-import dao.vzdelanie.VzdelaniePocetZiakovDaoImpl;
 import dao.zdravie.ZdraviePocetLekarovDaoImpl;
 import dao.zdravie.ZdraviePocetNemocnicDaoImpl;
-import dao.zdravie.ZdraviePocetPoliklinikDaoImpl;
 import entity.doprava.DopravaPocetNehod;
 import entity.ekonomika.EkonomikaCenyBytov;
 import entity.ekonomika.EkonomikaIndexStartnutia;
@@ -40,7 +28,7 @@ import entity.vzdelanie.VzdelaniePocetZiakov;
 import entity.zdravie.ZdraviePocetLekarov;
 import entity.zdravie.ZdraviePocetNemocnic;
 import entity.zdravie.ZdraviePocetPoliklinik;
-import enums.TypSkoly;
+import enums.Priority;
 import enums.TypZariadeni;
 import loadData.doprava.DopravaPocetNehodImport;
 import loadData.ekonomika.EkonomikaCenyBytovImport;
@@ -66,7 +54,6 @@ import loadData.zdravie.ZdraviePocetPoliklinikImport;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Class represents: Main Class
@@ -86,28 +73,73 @@ public class Main {
         loadSpravodlivost(connectionSource);
         loadVzdelania(connectionSource);
         loadZdravie(connectionSource);
-        testDb(connectionSource);
+
+
+        //Delete later
+        testDao(connectionSource);
+        testCenyBytov(connectionSource);
+        testApp(connectionSource);
         System.out.println("OK");
+
+
         connectionSource.close();
     }
 
-
-
-    private static void testDb(JdbcPooledConnectionSource connectionSource) throws SQLException {
+    private static void testDao(JdbcPooledConnectionSource connectionSource) throws SQLException {
         ZdraviePocetNemocnicDaoImpl dao = new ZdraviePocetNemocnicDaoImpl(connectionSource);
 
         //kazda implementovana metoda v DAO vrati pri zadani validnych parametrov zoradeny zoznam o velkosti 5
         //napr v tomto pripade to vrati {[" Bratislava II","6"],[" Bratislava I","5"],[" Bratislava III","4"],[" Bratislava V","2"],[" Bratislava IV","0"]}
-        List<String[]> tmp = dao.getPocetNemocnicByOkres(2017);
+        List<String[]> tmp = dao.getPocetNemocnicByRok(2017);
 
-        String okres = tmp.get(0)[0]; // " Bratislava II"
+        String okres = tmp.get(0)[0]; // " BratislavaII"
         String hodnota = tmp.get(0)[1]; // "6"
-
-
 
         System.out.println(tmp);
         System.out.println(okres);
         System.out.println(hodnota);
+    }
+
+
+    private static void testCenyBytov(JdbcPooledConnectionSource connectionSource) throws SQLException {
+        EkonomikaCenyBytovDaoImpl ekonomikaCenyBytovDao = new EkonomikaCenyBytovDaoImpl(connectionSource);
+        String cenaBytovBlavaI = ekonomikaCenyBytovDao.getPriemernuCenuBytovByOkres("BratislavaI");
+        System.out.println(cenaBytovBlavaI);
+    }
+
+
+    //Rovnako zadane priority ale rozne typy prepocitavania
+    private static void testApp(JdbcPooledConnectionSource connectionSource) throws SQLException {
+        ZdraviePocetNemocnicDaoImpl zdraviePocetNemocnics = new ZdraviePocetNemocnicDaoImpl(connectionSource);
+        ZdraviePocetLekarovDaoImpl zdraviePocetLekarovs = new ZdraviePocetLekarovDaoImpl(connectionSource);
+        EkonomikaIndexStartnutiaDaoImpl ekonomikaIndexStartnutias = new EkonomikaIndexStartnutiaDaoImpl(connectionSource);
+        VzdelanieInternatyVSDaoImpl vzdelanieInternatyVS = new VzdelanieInternatyVSDaoImpl(connectionSource);
+        InfrastrukturaPocetPostDaoImpl infrastrukturaPocetPosts = new InfrastrukturaPocetPostDaoImpl(connectionSource);
+        KulturaPocetZariadeniDaoImpl kulturaPocetZariadenis = new KulturaPocetZariadeniDaoImpl(connectionSource);
+        SpravodlivostTrestneCinyPodVplyvomDaoImpl spravodlivostTrestneCinyPodVplyvoms = new SpravodlivostTrestneCinyPodVplyvomDaoImpl(connectionSource);
+
+        AppLogic appLogicWinnerTakesAll = new AppLogic();
+        appLogicWinnerTakesAll.addPointsWinnerTakesAll(zdraviePocetNemocnics.getPocetNemocnicByRok(2017), Priority.MUST_HAVE);
+        appLogicWinnerTakesAll.addPointsWinnerTakesAll(zdraviePocetLekarovs.getPocetLekarovByRok(2017), Priority.MUST_HAVE);
+        appLogicWinnerTakesAll.addPointsWinnerTakesAll(ekonomikaIndexStartnutias.getIndexStarnutiaByRok(2017), Priority.MUST_HAVE);
+        appLogicWinnerTakesAll.addPointsWinnerTakesAll(vzdelanieInternatyVS.getPocetInternatovByRok(2017), Priority.MUST_HAVE);
+        appLogicWinnerTakesAll.addPointsWinnerTakesAll(infrastrukturaPocetPosts.getPocetPostByRok(2017), Priority.DO_NOT_WANT);
+        appLogicWinnerTakesAll.addPointsWinnerTakesAll(kulturaPocetZariadenis.getPocetZariadeniByRokATypZariadenia(2017, TypZariadeni.DIVADLO), Priority.MUST_HAVE);
+        appLogicWinnerTakesAll.addPointsWinnerTakesAll(spravodlivostTrestneCinyPodVplyvoms.getPocetZistenychTrestnychCinovPodVplyvomByRok(2017), Priority.DO_NOT_WANT);
+        List<String> result = appLogicWinnerTakesAll.getWinner();
+
+        AppLogic appLogicProportional = new AppLogic();
+        appLogicProportional.addPointsProportional(zdraviePocetNemocnics.getPocetNemocnicByRok(2017), Priority.MUST_HAVE);
+        appLogicProportional.addPointsProportional(zdraviePocetLekarovs.getPocetLekarovByRok(2017), Priority.MUST_HAVE);
+        appLogicProportional.addPointsProportional(ekonomikaIndexStartnutias.getIndexStarnutiaByRok(2017), Priority.MUST_HAVE);
+        appLogicProportional.addPointsProportional(vzdelanieInternatyVS.getPocetInternatovByRok(2017), Priority.MUST_HAVE);
+        appLogicProportional.addPointsProportional(infrastrukturaPocetPosts.getPocetPostByRok(2017), Priority.DO_NOT_WANT);
+        appLogicProportional.addPointsProportional(kulturaPocetZariadenis.getPocetZariadeniByRokATypZariadenia(2017, TypZariadeni.DIVADLO), Priority.MUST_HAVE);
+        appLogicProportional.addPointsProportional(spravodlivostTrestneCinyPodVplyvoms.getPocetZistenychTrestnychCinovPodVplyvomByRok(2017), Priority.DO_NOT_WANT);
+        List<String> resultOther = appLogicProportional.getWinner();
+
+        System.out.println("Vysledok - Winner takes all " + result); // Result - BratislavaI (3 points) a BratislavaII (3 points)
+        System.out.println("Vysledok - Proporcne " + resultOther); // Result - BratislavaI (44 points) (BratislavaII je az na tretom mieste (38 points))
     }
 
     private static void loadDoprava(JdbcPooledConnectionSource connectionSource) throws SQLException {
@@ -129,11 +161,13 @@ public class Main {
         EkonomikaCenyBytovImport ekonomikaCenyBytovImport = new EkonomikaCenyBytovImport();
         ekonomikaCenyBytovImport.getEkonomikaCenyBytov(connectionSource);
     }
+
     private static void loadInfrastruktura(JdbcPooledConnectionSource connectionSource) throws SQLException {
         TableUtils.createTableIfNotExists(connectionSource, InfrastrukturaPocetPost.class);
         InfrastrukturaPocetPostImport infrastrukturaPocetPostImport = new InfrastrukturaPocetPostImport();
         infrastrukturaPocetPostImport.getInfrastrukturaPocetPost(connectionSource);
     }
+
     private static void loadKultura(JdbcPooledConnectionSource connectionSource) throws SQLException {
         TableUtils.createTableIfNotExists(connectionSource, KulturaPocetZariadeni.class);
         KulturaPocetZariadeniImport kulturaZariadeniaVolnyCasImport = new KulturaPocetZariadeniImport();

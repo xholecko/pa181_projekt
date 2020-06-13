@@ -18,5 +18,5 @@ public interface ZdraviePocetNemocnicDao extends Dao<ZdraviePocetNemocnic,Long> 
      * @return zoradeny list casti bratislavy podla poctu nemocnic od najviac po najmenej
      * @throws SQLException e
      */
-    List<String[]> getPocetNemocnicByOkres(int rok) throws SQLException;
+    List<String[]> getPocetNemocnicByRok(int rok) throws SQLException;
 }
