@@ -18,7 +18,7 @@ public class VzdelaniePocetZiakovDaoImpl extends BaseDaoImpl<VzdelaniePocetZiako
     }
 
     @Override
-    public List<String[]> getPocetZiakovByOkres(int rok, TypSkoly typSkoly) throws SQLException {
+    public List<String[]> getPocetZiakovByRokATypSkoly(int rok, TypSkoly typSkoly) throws SQLException {
         return super.queryBuilder().selectRaw("okres").selectRaw("SUM (pocetZiakov) as pocetZiakovs")
                 .groupBy("okres")
                 .orderByRaw("pocetZiakovs DESC")

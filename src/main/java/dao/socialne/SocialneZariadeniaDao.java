@@ -18,5 +18,5 @@ public interface SocialneZariadeniaDao extends Dao<SocialneZariadenia,Long> {
      * @return zoradeny list casti bratislavy podla poctu trestnych cinov, od casti ktora ma najmensi pocet trestnych cinov po tu ktora ma najvyssi pocet
      * @throws SQLException e
      */
-    List<String[]> getPocetSocialnychZariadeniByOkres(int rok) throws SQLException;
+    List<String[]> getPocetSocialnychZariadeniByRok(int rok) throws SQLException;
 }

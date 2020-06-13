@@ -19,5 +19,5 @@ public interface EkonomikaIndexStartnutiaDao extends Dao<EkonomikaIndexStartnuti
      * @return zoradeny list casti bratislavy od casti ktora ma najnizsi priemerny index starnutia po casti ktora ma najvyssi priemerny index starnutia
      * @throws SQLException e
      */
-    List<String[]> getIndexStarnutiaByOkres(int rok) throws SQLException;
+    List<String[]> getIndexStarnutiaByRok(int rok) throws SQLException;
 }

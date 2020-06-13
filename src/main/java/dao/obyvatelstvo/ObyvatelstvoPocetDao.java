@@ -18,5 +18,5 @@ public interface ObyvatelstvoPocetDao extends Dao<ObyvatelstvoPocet, Long> {
      * @return zoradeny list casti bratislavy podla poctu obyvatelov od casti ktora ma najmenej obyvatelov po cast ktora ma najviac obyvatelov
      * @throws SQLException e
      */
-    List<String[]> getPocetObyvatelovByOkres(int rok) throws SQLException;
+    List<String[]> getPocetObyvatelovByRok(int rok) throws SQLException;
 }

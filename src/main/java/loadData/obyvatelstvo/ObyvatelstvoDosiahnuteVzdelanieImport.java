@@ -29,7 +29,8 @@ public class ObyvatelstvoDosiahnuteVzdelanieImport {
             while ((line = br.readLine()) != null && !line.startsWith(";")){
                 String[] fields = line.split(cvsSplitBy);
                 ObyvatelstvoDosiahnuteVzdelanie entity =
-                        new ObyvatelstvoDosiahnuteVzdelanie(fields[3],fields[5],fields[7],
+                        new ObyvatelstvoDosiahnuteVzdelanie(
+                                fields[3].replaceAll("\\s+",""),fields[5],fields[7],
                         fields[8].equals("") ? 0 : Integer.parseInt(fields[8].replaceAll("\\s+", "")),
                         fields[9].equals("") ? 0 :Integer.parseInt(fields[9].replaceAll("\\s+", "")),
                         fields[10].equals("") ? 0 :Integer.parseInt(fields[10].replaceAll("\\s+", "")),

@@ -13,7 +13,7 @@ public class SocialneZariadeniaDaoImpl extends BaseDaoImpl<SocialneZariadenia, L
     }
 
     @Override
-    public List<String[]> getPocetSocialnychZariadeniByOkres(int rok) throws SQLException {
+    public List<String[]> getPocetSocialnychZariadeniByRok(int rok) throws SQLException {
         return super.queryBuilder().selectRaw("okres").selectRaw("SUM (pocet) as pocets")
                 .groupBy("okres")
                 .orderByRaw("pocets DESC")

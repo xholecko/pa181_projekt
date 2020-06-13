@@ -17,7 +17,7 @@ public class SpravodlivostTrestneCinyDaoImpl extends BaseDaoImpl<SpravodlivostTr
     }
 
     @Override
-    public List<String[]> getPocetZistenychTrestnychCinovByOkres(int rok) throws SQLException {
+    public List<String[]> getPocetZistenychTrestnychCinovByRok(int rok) throws SQLException {
         return super.queryBuilder().selectRaw("okres").selectRaw("SUM (pocetZistenych) as pocetZistenychs")
                 .groupBy("okres")
                 .orderByRaw("pocetZistenychs")

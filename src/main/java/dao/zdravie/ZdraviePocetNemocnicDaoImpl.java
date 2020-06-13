@@ -17,7 +17,7 @@ public class ZdraviePocetNemocnicDaoImpl extends BaseDaoImpl<ZdraviePocetNemocni
     }
 
     @Override
-    public List<String[]> getPocetNemocnicByOkres(int rok) throws SQLException {
+    public List<String[]> getPocetNemocnicByRok(int rok) throws SQLException {
         return super.queryBuilder().selectRaw("okres").selectRaw("SUM (pocetNemocnic) as pocetNemocnics")
                 .groupBy("okres")
                 .orderByRaw("pocetNemocnics DESC")

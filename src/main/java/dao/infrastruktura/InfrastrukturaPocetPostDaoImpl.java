@@ -18,7 +18,7 @@ public class InfrastrukturaPocetPostDaoImpl extends BaseDaoImpl<InfrastrukturaPo
 
 
     @Override
-    public List<String[]> getPocetPostByOkres(int rok) throws SQLException {
+    public List<String[]> getPocetPostByRok(int rok) throws SQLException {
         return super.queryBuilder().selectRaw("okres").selectRaw("SUM (pocetPost) as pocetPosts")
                 .groupBy("okres")
                 .orderByRaw("pocetPosts DESC")

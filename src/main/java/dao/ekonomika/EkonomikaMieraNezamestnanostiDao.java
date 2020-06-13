@@ -18,5 +18,5 @@ public interface EkonomikaMieraNezamestnanostiDao extends Dao<EkonomikaMieraNeza
      * @return zoradeny list casti bratislavy od casti ktora ma najnizsiu priemernu nezamestnanost po cast ktora ma najvyssiu nezamestnanost
      * @throws SQLException e
      */
-    List<String[]> getMieraNezamestnanostiByOkres(int rok) throws SQLException;
+    List<String[]> getMieraNezamestnanostiByRok(int rok) throws SQLException;
 }

@@ -25,7 +25,8 @@ public class ZdraviePocetLekarovImport {
             ZdraviePocetLekarovDaoImpl dao = new ZdraviePocetLekarovDaoImpl(connectionSource);
             while ((line = br.readLine()) != null && !line.startsWith(";")){
                 String[] fields = line.split(cvsSplitBy);
-                ZdraviePocetLekarov entity = new ZdraviePocetLekarov(fields[0],fields[1],
+                ZdraviePocetLekarov entity = new ZdraviePocetLekarov(
+                        fields[0].replaceAll("\\s+",""),fields[1],
                         fields[2].equals("") ? 0 : Integer.parseInt(fields[2].replaceAll("\\s+", "")),
                         fields[3].equals("") ? 0 : Integer.parseInt(fields[3].replaceAll("\\s+", "")),
                         fields[4].equals("") ? 0 : Integer.parseInt(fields[4].replaceAll("\\s+", "")),
