@@ -18,5 +18,5 @@ public interface SpravodlivostTrestneCinyPodVplyvomDao extends Dao<Spravodlivost
      * @return zoradeny list casti bratislavy podla poctu trestnych cinov pod vplyvom drog alebo alkoholu od casti kde je nejemenej trestnych cinov po cost kde je najviac
      * @throws SQLException e
      */
-    List<String[]> getPocetZistenychTrestnychCinovPodVplyvomByRok(int rok) throws SQLException;
+    List<String[]> getPocetZistenychTrestnychCinovPodVplyvomByRokSorted(int rok) throws SQLException;
 }

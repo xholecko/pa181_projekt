@@ -18,7 +18,7 @@ public class EkonomikaMieraNezamestnanostiDaoImpl extends BaseDaoImpl<EkonomikaM
 
 
     @Override
-    public List<String[]> getMieraNezamestnanostiByRok(int rok) throws SQLException {
+    public List<String[]> getMieraNezamestnanostiByRokSorted(int rok) throws SQLException {
         return super.queryBuilder().selectRaw("okres").selectRaw("AVG (miera) as mieras")
                 .groupBy("okres")
                 .orderByRaw("mieras")

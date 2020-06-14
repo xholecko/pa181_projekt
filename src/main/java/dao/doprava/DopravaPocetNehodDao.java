@@ -21,6 +21,6 @@ public interface DopravaPocetNehodDao extends Dao<DopravaPocetNehod, Long> {
      * @return zoradeny list casti bratislavy od casti ktora ma najmenej nehod po tu cast ktora ma najviac nehod za dane obdobie
      * @throws SQLException e
      */
-    List<String[]> getPocetNehodByRok(int rok) throws SQLException;
+    List<String[]> getPocetNehodByRokSorted(int rok) throws SQLException;
 
 }

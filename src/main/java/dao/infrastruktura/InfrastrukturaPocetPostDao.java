@@ -18,5 +18,5 @@ public interface InfrastrukturaPocetPostDao extends Dao<InfrastrukturaPocetPost,
      * @return zoradeny list casti bratislavy od casti ktora ma najviac post po cast ktora ma najemnej post
      * @throws SQLException e
      */
-    List<String[]> getPocetPostByRok(int rok) throws SQLException;
+    List<String[]> getPocetPostByRokSorted(int rok) throws SQLException;
 }

@@ -29,5 +29,5 @@ public interface VzdelanieInternatyVSDao extends Dao<VzdelanieInternatyVS,Long> 
      * @return zoradeny list casti bratislavy podla poctu internatov od najvacsieho po najmensi
      * @throws SQLException e
      */
-    List<String[]> getPocetInternatovByRok(int rok) throws SQLException;
+    List<String[]> getPocetInternatovByRokSorted(int rok) throws SQLException;
 }

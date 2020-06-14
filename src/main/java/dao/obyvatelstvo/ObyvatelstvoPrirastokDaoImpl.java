@@ -17,7 +17,7 @@ public class ObyvatelstvoPrirastokDaoImpl extends BaseDaoImpl<ObyvatelstvoPriras
     }
 
     @Override
-    public List<String[]> getPrirastokByRok(int rok) throws SQLException {
+    public List<String[]> getPrirastokByRokSorted(int rok) throws SQLException {
 
         return super.queryBuilder().selectRaw("okres").selectRaw("SUM (prirastok) as prirastoks")
                 .groupBy("okres")

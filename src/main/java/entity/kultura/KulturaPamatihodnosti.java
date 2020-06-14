@@ -22,6 +22,9 @@ public class KulturaPamatihodnosti {
     private long id;
 
     @DatabaseField(canBeNull = false)
+    private String okres;
+
+    @DatabaseField(canBeNull = false)
     private String mestskaCast;
 
     @DatabaseField(canBeNull = false)
@@ -30,7 +33,8 @@ public class KulturaPamatihodnosti {
     @DatabaseField(canBeNull = false)
     private String typ;
 
-    public KulturaPamatihodnosti(String mestskaCast, String nazovPamatihodnosti, String typ) {
+    public KulturaPamatihodnosti(String okres, String mestskaCast, String nazovPamatihodnosti, String typ) {
+        this.okres = okres;
         this.mestskaCast = mestskaCast;
         this.nazovPamatihodnosti = nazovPamatihodnosti;
         this.typ = typ;
@@ -44,20 +48,23 @@ public class KulturaPamatihodnosti {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         KulturaPamatihodnosti that = (KulturaPamatihodnosti) o;
-        return getMestskaCast().equals(that.getMestskaCast()) &&
+        return getId() == that.getId() &&
+                getOkres().equals(that.getOkres()) &&
+                getMestskaCast().equals(that.getMestskaCast()) &&
                 getNazovPamatihodnosti().equals(that.getNazovPamatihodnosti()) &&
                 getTyp().equals(that.getTyp());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getMestskaCast(), getNazovPamatihodnosti(), getTyp());
+        return Objects.hash(getId(), getOkres(), getMestskaCast(), getNazovPamatihodnosti(), getTyp());
     }
 
     @Override
     public String toString() {
         return "KulturaPamatihodnosti{" +
                 "id=" + id +
+                ", okres='" + okres + '\'' +
                 ", mestskaCast='" + mestskaCast + '\'' +
                 ", nazovPamatihodnosti='" + nazovPamatihodnosti + '\'' +
                 ", typ='" + typ + '\'' +

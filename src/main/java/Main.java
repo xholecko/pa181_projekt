@@ -3,6 +3,7 @@ import com.j256.ormlite.table.TableUtils;
 import dao.ekonomika.EkonomikaCenyBytovDaoImpl;
 import dao.ekonomika.EkonomikaIndexStartnutiaDaoImpl;
 import dao.infrastruktura.InfrastrukturaPocetPostDaoImpl;
+import dao.kultura.KulturaPamatihodnostiDaoImpl;
 import dao.kultura.KulturaPocetZariadeniDaoImpl;
 import dao.spravodlivost.SpravodlivostTrestneCinyPodVplyvomDaoImpl;
 import dao.vzdelanie.VzdelanieInternatyVSDaoImpl;
@@ -79,6 +80,7 @@ public class Main {
         testDao(connectionSource);
         testCenyBytov(connectionSource);
         testApp(connectionSource);
+        testPametihodnosti(connectionSource);
         System.out.println("OK");
 
 
@@ -90,7 +92,7 @@ public class Main {
 
         //kazda implementovana metoda v DAO vrati pri zadani validnych parametrov zoradeny zoznam o velkosti 5
         //napr v tomto pripade to vrati {[" Bratislava II","6"],[" Bratislava I","5"],[" Bratislava III","4"],[" Bratislava V","2"],[" Bratislava IV","0"]}
-        List<String[]> tmp = dao.getPocetNemocnicByRok(2017);
+        List<String[]> tmp = dao.getPocetNemocnicByRokSorted(2017);
 
         String okres = tmp.get(0)[0]; // " BratislavaII"
         String hodnota = tmp.get(0)[1]; // "6"
@@ -119,29 +121,38 @@ public class Main {
         SpravodlivostTrestneCinyPodVplyvomDaoImpl spravodlivostTrestneCinyPodVplyvoms = new SpravodlivostTrestneCinyPodVplyvomDaoImpl(connectionSource);
 
         AppLogic appLogicWinnerTakesAll = new AppLogic();
-        appLogicWinnerTakesAll.addPointsWinnerTakesAll(zdraviePocetNemocnics.getPocetNemocnicByRok(2017), Priority.MUST_HAVE);
-        appLogicWinnerTakesAll.addPointsWinnerTakesAll(zdraviePocetLekarovs.getPocetLekarovByRok(2017), Priority.MUST_HAVE);
-        appLogicWinnerTakesAll.addPointsWinnerTakesAll(ekonomikaIndexStartnutias.getIndexStarnutiaByRok(2017), Priority.MUST_HAVE);
-        appLogicWinnerTakesAll.addPointsWinnerTakesAll(vzdelanieInternatyVS.getPocetInternatovByRok(2017), Priority.MUST_HAVE);
-        appLogicWinnerTakesAll.addPointsWinnerTakesAll(infrastrukturaPocetPosts.getPocetPostByRok(2017), Priority.DO_NOT_WANT);
-        appLogicWinnerTakesAll.addPointsWinnerTakesAll(kulturaPocetZariadenis.getPocetZariadeniByRokATypZariadenia(2017, TypZariadeni.DIVADLO), Priority.MUST_HAVE);
-        appLogicWinnerTakesAll.addPointsWinnerTakesAll(spravodlivostTrestneCinyPodVplyvoms.getPocetZistenychTrestnychCinovPodVplyvomByRok(2017), Priority.DO_NOT_WANT);
+        appLogicWinnerTakesAll.addPointsWinnerTakesAll(zdraviePocetNemocnics.getPocetNemocnicByRokSorted(2017), Priority.MUST_HAVE);
+        appLogicWinnerTakesAll.addPointsWinnerTakesAll(zdraviePocetLekarovs.getPocetLekarovByRokSorted(2017), Priority.MUST_HAVE);
+        appLogicWinnerTakesAll.addPointsWinnerTakesAll(ekonomikaIndexStartnutias.getIndexStarnutiaByRokSorted(2017), Priority.MUST_HAVE);
+        appLogicWinnerTakesAll.addPointsWinnerTakesAll(vzdelanieInternatyVS.getPocetInternatovByRokSorted(2017), Priority.MUST_HAVE);
+        appLogicWinnerTakesAll.addPointsWinnerTakesAll(infrastrukturaPocetPosts.getPocetPostByRokSorted(2017), Priority.DO_NOT_WANT);
+        appLogicWinnerTakesAll.addPointsWinnerTakesAll(kulturaPocetZariadenis.getPocetZariadeniByRokATypZariadeniaSorted(2017, TypZariadeni.DIVADLO), Priority.MUST_HAVE);
+        appLogicWinnerTakesAll.addPointsWinnerTakesAll(spravodlivostTrestneCinyPodVplyvoms.getPocetZistenychTrestnychCinovPodVplyvomByRokSorted(2017), Priority.DO_NOT_WANT);
         List<String> result = appLogicWinnerTakesAll.getWinner();
 
         AppLogic appLogicProportional = new AppLogic();
-        appLogicProportional.addPointsProportional(zdraviePocetNemocnics.getPocetNemocnicByRok(2017), Priority.MUST_HAVE);
-        appLogicProportional.addPointsProportional(zdraviePocetLekarovs.getPocetLekarovByRok(2017), Priority.MUST_HAVE);
-        appLogicProportional.addPointsProportional(ekonomikaIndexStartnutias.getIndexStarnutiaByRok(2017), Priority.MUST_HAVE);
-        appLogicProportional.addPointsProportional(vzdelanieInternatyVS.getPocetInternatovByRok(2017), Priority.MUST_HAVE);
-        appLogicProportional.addPointsProportional(infrastrukturaPocetPosts.getPocetPostByRok(2017), Priority.DO_NOT_WANT);
-        appLogicProportional.addPointsProportional(kulturaPocetZariadenis.getPocetZariadeniByRokATypZariadenia(2017, TypZariadeni.DIVADLO), Priority.MUST_HAVE);
-        appLogicProportional.addPointsProportional(spravodlivostTrestneCinyPodVplyvoms.getPocetZistenychTrestnychCinovPodVplyvomByRok(2017), Priority.DO_NOT_WANT);
+        appLogicProportional.addPointsProportional(zdraviePocetNemocnics.getPocetNemocnicByRokSorted(2017), Priority.MUST_HAVE);
+        appLogicProportional.addPointsProportional(zdraviePocetLekarovs.getPocetLekarovByRokSorted(2017), Priority.MUST_HAVE);
+        appLogicProportional.addPointsProportional(ekonomikaIndexStartnutias.getIndexStarnutiaByRokSorted(2017), Priority.MUST_HAVE);
+        appLogicProportional.addPointsProportional(vzdelanieInternatyVS.getPocetInternatovByRokSorted(2017), Priority.MUST_HAVE);
+        appLogicProportional.addPointsProportional(infrastrukturaPocetPosts.getPocetPostByRokSorted(2017), Priority.DO_NOT_WANT);
+        appLogicProportional.addPointsProportional(kulturaPocetZariadenis.getPocetZariadeniByRokATypZariadeniaSorted(2017, TypZariadeni.DIVADLO), Priority.MUST_HAVE);
+        appLogicProportional.addPointsProportional(spravodlivostTrestneCinyPodVplyvoms.getPocetZistenychTrestnychCinovPodVplyvomByRokSorted(2017), Priority.DO_NOT_WANT);
         List<String> resultOther = appLogicProportional.getWinner();
 
         System.out.println("Vysledok - Winner takes all " + result); // Result - BratislavaI (3 points) a BratislavaII (3 points)
         System.out.println("Vysledok - Proporcne " + resultOther); // Result - BratislavaI (44 points) (BratislavaII je az na tretom mieste (38 points))
     }
 
+    private static void testPametihodnosti(JdbcPooledConnectionSource connectionSource) throws SQLException {
+        KulturaPamatihodnostiDaoImpl dao = new KulturaPamatihodnostiDaoImpl(connectionSource);
+        List<KulturaPamatihodnosti> list = dao.queryForAll();
+        List<String[]> tmp = dao.getPamatihodnostiSorted();
+        System.out.println(tmp);
+    }
+
+
+    ////////////////////// NACITANIE DAT Z DATASETOV /////////////////////
     private static void loadDoprava(JdbcPooledConnectionSource connectionSource) throws SQLException {
         TableUtils.createTableIfNotExists(connectionSource, DopravaPocetNehod.class);
         DopravaPocetNehodImport dopravaPocetNehodImport = new DopravaPocetNehodImport();

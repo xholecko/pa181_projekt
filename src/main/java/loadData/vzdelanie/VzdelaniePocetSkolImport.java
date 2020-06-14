@@ -14,7 +14,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Class represents:
+ * Class represents: NENI POUZITE
  * @author xholecko
  */
 public class VzdelaniePocetSkolImport {
@@ -22,8 +22,6 @@ public class VzdelaniePocetSkolImport {
     private static final String URL_GYMNAZIUM = "https://opendata.bratislava.sk/dataset/download/pocet-gymnazii-a-pocet-ziakov-gymnazii/1";
     private static final String URL_STREDNA_OSBORNA = "https://opendata.bratislava.sk/dataset/download/pocet-strednych-odbornych-skol-a-pocet-ziakov-strednych-odbornych-skol/1";
     private static final String URL_JAZYKOVA = "https://opendata.bratislava.sk/dataset/download/pocet-sukromnych-jazykovych-skol-a-pocet-ziakov-v-sukromnych-jazykovych-skolach/1";
-
-
 
     public void getVzdelaniePocetSkol(JdbcPooledConnectionSource connectionSource){
         HashMap<String, String> maps = new HashMap<>();

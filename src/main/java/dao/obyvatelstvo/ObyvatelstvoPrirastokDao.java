@@ -18,5 +18,5 @@ public interface ObyvatelstvoPrirastokDao extends Dao<ObyvatelstvoPrirastok,Long
      * @return zoradeny list casti bratislavy podla priemerneho prirastku, od casti ktora ma najvacsi rocny prirastok po cast ktora ma najmensi prirastok
      * @throws SQLException e
      */
-    List<String[]> getPrirastokByRok(int rok) throws SQLException;
+    List<String[]> getPrirastokByRokSorted(int rok) throws SQLException;
 }

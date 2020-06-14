@@ -20,5 +20,5 @@ public interface KulturaPocetZariadeniDao extends Dao<KulturaPocetZariadeni, Lon
      * @return zoradeny list casti bratislavy od casti ktora ma zariadeni daneho typu po cast ktora ma najmenej
      * @throws SQLException e
      */
-    List<String[]> getPocetZariadeniByRokATypZariadenia(int rok, TypZariadeni typZariadeni) throws SQLException;
+    List<String[]> getPocetZariadeniByRokATypZariadeniaSorted(int rok, TypZariadeni typZariadeni) throws SQLException;
 }
