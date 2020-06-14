@@ -19,5 +19,5 @@ public interface VzdelaniePocetZiakovDao extends Dao<VzdelaniePocetZiakov,Long> 
      * @return zoradeny list casti bratislavy od casti ktora ma najviac ziakov po cast ktora ma najemej ziakov
      * @throws SQLException e
      */
-    List<String[]> getPocetZiakovByRokATypSkoly(int rok, TypSkoly typSkoly) throws SQLException;
+    List<String[]> getPocetZiakovByRokATypSkolySorted(int rok, TypSkoly typSkoly) throws SQLException;
 }

@@ -11,6 +11,10 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Class represents:
  * @author xholecko
@@ -27,19 +31,13 @@ public class KulturaPamatihodnostiImport {
     private static final String URL_ZDRAVOTNICTVO_SKOLSTVO = "https://opendata.bratislava.sk/dataset/download/celomestsky-zoznam-pamatihodnosti-mesta-bratislavy/9";
     private static final String URL_INE = "https://opendata.bratislava.sk/dataset/download/celomestsky-zoznam-pamatihodnosti-mesta-bratislavy/10";
 
-    public void getKulturaPamatihodnosti(JdbcPooledConnectionSource connectionSource){
-        ArrayList<String>  typy = new ArrayList<>();
-        typy.add(URL_BYVANIE);
-        typy.add(URL_DOPRAVA);
-        typy.add(URL_LUDOVA_KULTURA);
-        typy.add(URL_POMNIKY);
-        typy.add(URL_PRIEMYSEL);
-        typy.add(URL_SAKRALNE_PAMATIHODNOSTI);
-        typy.add(URL_VOJENSKE_PAMATIHODNOSTI);
-        typy.add(URL_ZAHRADY_PARKY);
-        typy.add(URL_ZDRAVOTNICTVO_SKOLSTVO);
-        typy.add(URL_INE);
+    private final HashMap<String, String> mestskeCasti = new HashMap<>();
+    private final ArrayList<String>  typy = new ArrayList<>();
 
+
+    public void getKulturaPamatihodnosti(JdbcPooledConnectionSource connectionSource){
+        setTypy();
+        setMestskeCasti();
         try {
             KulturaPamatihodnostiDaoImpl dao = new KulturaPamatihodnostiDaoImpl(connectionSource);
 
@@ -50,7 +48,7 @@ public class KulturaPamatihodnostiImport {
                 String cvsSplitBy = ";";
                 while ((line = br.readLine()) != null && !line.startsWith(";")){
                     String[] fields = line.split(cvsSplitBy);
-                    KulturaPamatihodnosti entity = new KulturaPamatihodnosti(fields[4],fields[2],fields[0]);
+                    KulturaPamatihodnosti entity = new KulturaPamatihodnosti(mestskaCastToOkres(fields[4]),fields[4],fields[2],fields[0]);
                     dao.createIfNotExists(entity);
                 }
                 br.close();
@@ -58,5 +56,57 @@ public class KulturaPamatihodnostiImport {
         } catch (IOException | SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    private void setTypy(){
+        typy.add(URL_BYVANIE);
+        typy.add(URL_DOPRAVA);
+        typy.add(URL_LUDOVA_KULTURA);
+        typy.add(URL_POMNIKY);
+        typy.add(URL_PRIEMYSEL);
+        typy.add(URL_SAKRALNE_PAMATIHODNOSTI);
+        typy.add(URL_VOJENSKE_PAMATIHODNOSTI);
+        typy.add(URL_ZAHRADY_PARKY);
+        typy.add(URL_ZDRAVOTNICTVO_SKOLSTVO);
+        typy.add(URL_INE);
+    }
+
+    private void setMestskeCasti(){
+        mestskeCasti.put("Staré mesto","BratislavaI");
+        mestskeCasti.put("Ružinov","BratislavaII");
+        mestskeCasti.put("Vrakuňa","BratislavaII");
+        mestskeCasti.put("Podunajské biskupice","BratislavaII");
+        mestskeCasti.put("Nové mesto","BratislavaIII");
+        mestskeCasti.put("Rača","BratislavaIII");
+        mestskeCasti.put("Vajnory","BratislavaIII");
+        mestskeCasti.put("Karlova ves","BratislavaIV");
+        mestskeCasti.put("Dúbravka","BratislavaIV");
+        mestskeCasti.put("Lamač","BratislavaIV");
+        mestskeCasti.put("Devín","BratislavaIV");
+        mestskeCasti.put("Devínska nová ves","BratislavaIV");
+        mestskeCasti.put("Záhorská bystrica","BratislavaIV");
+        mestskeCasti.put("Petržalka","BratislavaV");
+        mestskeCasti.put("Jarovce","BratislavaV");
+        mestskeCasti.put("Rusovce","BratislavaV");
+        mestskeCasti.put("Čunovo","BratislavaV");
+    }
+
+
+    // V datasete sa nachadza niekolko zaznamov kde mestska cast je "-" alebi nieco neidentifikovatelne
+    // Zaznamov je to asi len 15 z celkoveho poctu cca 350 takze to realne nijako data nesprzni,
+    // tieto zaznamy budu mat oznacenie mestskej casti ako "undefined"
+    // v dao som vyfiltroval tieto zaznamy takze to vrati iba korektne zaznamy
+    private String mestskaCastToOkres(String mestskaCast){
+        String result = "undefined";
+        for (Map.Entry<String, String> entry : mestskeCasti.entrySet()) {
+            if (mestskaCast.toLowerCase().contains(entry.getKey().toLowerCase())){
+                result = entry.getValue();
+                break;
+            }
+        }
+//        if (result.equals("undefined")){
+//            System.out.println(mestskaCast);
+//        }
+        return result;
     }
 }

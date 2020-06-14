@@ -15,6 +15,11 @@ public class AppLogic {
         resultMap.put("BratislavaV",0);
     }
 
+    /**
+     * Rozdeluje body typom vytaz berie vsetko
+     * @param result vysledok dao metody
+     * @param priority zadana priorita
+     */
     public void addPointsWinnerTakesAll(List<String[]> result, Priority priority){
         if (priority.equals(Priority.MUST_HAVE)){
             addPointsWinnerTakesAll(result.get(0)[0],2);
@@ -27,6 +32,11 @@ public class AppLogic {
         }
     }
 
+    /**
+     * Rozdeluje body proporcne
+     * @param result vysledok dao metody
+     * @param priority zadana priorita
+     */
     public void addPointsProportional(List<String[]> result, Priority priority){
         if (priority.equals(Priority.MUST_HAVE)){
             addPointsWinnerTakesAll(result.get(0)[0],10);

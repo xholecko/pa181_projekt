@@ -18,5 +18,5 @@ public interface ObyvatelstvoDosiahnuteVzdelanieDao  extends Dao<ObyvatelstvoDos
      * @return zoradeny list casti bratislavy od casti v ktorej je najviac obyvatelov s VS po cast kde je najmenej
      * @throws SQLException e
      */
-    List<String[]> getDosiahnuteVzdelanieSpoluByRok() throws SQLException;
+    List<String[]> getDosiahnuteVzdelanieSpoluByRokSorted() throws SQLException;
 }

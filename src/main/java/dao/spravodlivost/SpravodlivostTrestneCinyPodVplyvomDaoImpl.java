@@ -17,7 +17,7 @@ public class SpravodlivostTrestneCinyPodVplyvomDaoImpl extends BaseDaoImpl<Sprav
     }
 
     @Override
-    public List<String[]> getPocetZistenychTrestnychCinovPodVplyvomByRok(int rok) throws SQLException {
+    public List<String[]> getPocetZistenychTrestnychCinovPodVplyvomByRokSorted(int rok) throws SQLException {
         return super.queryBuilder().selectRaw("okres").selectRaw("SUM (pocetTrestnychCinovAlkohol + pocetTrestnychCinovDrogy) as pocetTrestnychCinovs")
                 .groupBy("okres")
                 .orderByRaw("pocetTrestnychCinovs")

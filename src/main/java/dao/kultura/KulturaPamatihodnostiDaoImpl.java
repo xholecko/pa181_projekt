@@ -16,8 +16,11 @@ public class KulturaPamatihodnostiDaoImpl extends BaseDaoImpl<KulturaPamatihodno
         super(connectionSource, KulturaPamatihodnosti.class);
     }
     @Override
-    public List<String[]> getPamatihodnostiByRok() throws SQLException {
-        //TODO
-        return null;
+    public List<String[]> getPamatihodnostiSorted() throws SQLException {
+        return super.queryBuilder().selectRaw("okres").selectRaw("COUNT (okres) as pocetOkresov")
+                .groupBy("okres")
+                .orderByRaw("pocetOkresov DESC")
+                .where().not().eq("okres","undefined")
+                .queryRaw().getResults();
     }
 }

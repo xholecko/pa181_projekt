@@ -18,5 +18,5 @@ public interface SpravodlivostTrestneCinyDao extends Dao<SpravodlivostTrestneCin
      * @return zoradeny list casti bratislavy podla poctu trestnych cinov od casti kde je nejemenej trestnych cinov po cost kde je najviac
      * @throws SQLException e
      */
-    List<String[]> getPocetZistenychTrestnychCinovByRok(int rok) throws SQLException;
+    List<String[]> getPocetZistenychTrestnychCinovByRokSorted(int rok) throws SQLException;
 }

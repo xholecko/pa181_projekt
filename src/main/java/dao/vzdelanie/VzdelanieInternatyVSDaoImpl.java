@@ -26,7 +26,7 @@ public class VzdelanieInternatyVSDaoImpl extends BaseDaoImpl<VzdelanieInternatyV
     }
 
     @Override
-    public List<String[]> getPocetInternatovByRok(int rok) throws SQLException {
+    public List<String[]> getPocetInternatovByRokSorted(int rok) throws SQLException {
         return super.queryBuilder().selectRaw("okres").selectRaw("SUM (pocetInternatov) as pocetInternatovs")
                 .groupBy("okres")
                 .orderByRaw("pocetInternatovs DESC")

@@ -13,10 +13,12 @@ import java.util.List;
 public interface KulturaPamatihodnostiDao extends Dao<KulturaPamatihodnosti, Long> {
 
     /**
+     * Dataset niekedy vrati ako mestsku cast nejaku nekorektnu hodnotu napr "-", tychto zaznamov je minimum
+     * a ako okres v Importe som im nastavil "undefined", s tymi zaznamami sa nebude pocitat a vo finalnom zozname nebudu
      *
      * @return zoradeny list casti bratislavy od casti ktora ma najviac pamatihodnosti po cast ktora ma najmenej
      * @throws SQLException e
      */
-    List<String[]> getPamatihodnostiByRok() throws SQLException;
-    //TODO
+    List<String[]> getPamatihodnostiSorted() throws SQLException;
+
 }

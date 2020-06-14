@@ -18,5 +18,5 @@ public interface ObyvatelstvoVierovyznanieDao extends Dao<ObyvatelstvoVierovyzna
      * @return zoradeny list casti bratislavy podla poctu veriacich, od casti kde je najviac veriacich po cast kde je najmenej veriacich
      * @throws SQLException e
      */
-    List<String[]> getVierovyznanieByRok() throws SQLException;
+    List<String[]> getVierovyznanieByRokSorted() throws SQLException;
 }

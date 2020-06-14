@@ -1,14 +1,11 @@
 package dao.doprava;
 
 import com.j256.ormlite.dao.BaseDaoImpl;
-import com.j256.ormlite.dao.GenericRawResults;
-import com.j256.ormlite.stmt.PreparedQuery;
 import com.j256.ormlite.support.ConnectionSource;
 import entity.doprava.DopravaPocetNehod;
 
 import java.sql.SQLException;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Class represents:
@@ -30,7 +27,7 @@ public class DopravaPocetNehodDaoImpl extends BaseDaoImpl<DopravaPocetNehod, Lon
     }
 
     @Override
-    public List<String[]> getPocetNehodByRok(int rok) throws SQLException{
+    public List<String[]> getPocetNehodByRokSorted(int rok) throws SQLException{
         return super.queryBuilder().selectRaw("okres").selectRaw("SUM (pocetNehod) as pocetNehods")
                 .groupBy("okres")
                 .orderByRaw("pocetNehods")
