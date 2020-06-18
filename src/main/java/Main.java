@@ -64,7 +64,10 @@ public class Main {
 
     public static void main(String[] args) throws SQLException, IOException {
         JdbcPooledConnectionSource connectionSource
-                = new JdbcPooledConnectionSource("jdbc:h2:mem:myDb");
+                = new JdbcPooledConnectionSource("jdbc:postgresql://echo.db.elephantsql.com:5432/iaiikhsz");
+        connectionSource.setUsername("iaiikhsz");
+        connectionSource.setPassword("qxD5ZWMDSWhxcN9lNSmts2BQeA2UpcgZ");
+
         loadDoprava(connectionSource);
         loadEkonomika(connectionSource);
         loadInfrastruktura(connectionSource);
