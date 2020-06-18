@@ -1,0 +1,5 @@
+package cz.pa181.project.enums;
+
+public enum TypZariadeni {
+    DIVADLO,GALERIA,MUZEUM,KINO,VOLNY_CAS_MLADEZ,VEDECKA_KNIZNICA,VEREJNA_KNIZNICA
+}
