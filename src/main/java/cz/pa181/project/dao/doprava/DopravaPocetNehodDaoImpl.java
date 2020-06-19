@@ -17,21 +17,20 @@ public class DopravaPocetNehodDaoImpl extends BaseDaoImpl<DopravaPocetNehod, Lon
     }
 
     @Override
-    public List<DopravaPocetNehod> findByOkres(String okres) throws SQLException {
-        return super.queryForEq("okres", okres);
-    }
-
-    @Override
-    public List<DopravaPocetNehod> findByRok(int rok) throws SQLException {
-        return super.queryForEq("rok", rok);
-    }
-
-    @Override
     public List<String[]> getPocetNehodByRokSorted(int rok) throws SQLException{
-        return super.queryBuilder().selectRaw("okres").selectRaw("SUM (pocetNehod) as pocetNehods")
+        int maxRok = getMaxRok();
+        if (rok > maxRok){
+            rok = maxRok;
+        }
+        return super.queryBuilder().selectRaw("okres").selectRaw("SUM(\"pocetNehod\") as pocetNehods")
                 .groupBy("okres")
                 .orderByRaw("pocetNehods")
                 .where().ge("rok",rok)
                 .queryRaw().getResults();
+    }
+
+    private int getMaxRok() throws SQLException{
+        String tmp = super.queryBuilder().selectRaw("MAX(\"rok\") as maxRok").queryRaw().getResults().get(0)[0];
+        return Integer.parseInt(tmp);
     }
 }

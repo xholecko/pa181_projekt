@@ -17,7 +17,7 @@ public class KulturaPamatihodnostiDaoImpl extends BaseDaoImpl<KulturaPamatihodno
     }
     @Override
     public List<String[]> getPamatihodnostiSorted() throws SQLException {
-        return super.queryBuilder().selectRaw("okres").selectRaw("COUNT (okres) as pocetOkresov")
+        return super.queryBuilder().selectRaw("okres").selectRaw("COUNT(\"okres\") as pocetOkresov")
                 .groupBy("okres")
                 .orderByRaw("pocetOkresov DESC")
                 .where().not().eq("okres","undefined")

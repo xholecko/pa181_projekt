@@ -10,11 +10,6 @@ import java.util.List;
  * @author xholecko
  */
 public interface DopravaPocetNehodDao extends Dao<DopravaPocetNehod, Long> {
-
-    List<DopravaPocetNehod> findByOkres(String okres) throws SQLException;
-
-    List<DopravaPocetNehod> findByRok(int rok) throws SQLException;
-
     /**
      *
      * @param rok rok (hodnoty od 2012 - 2018) hodnoty vacsie alebo rovne ako zadany rok

@@ -2,15 +2,25 @@ package cz.pa181.project;
 
 import com.j256.ormlite.jdbc.JdbcPooledConnectionSource;
 import com.j256.ormlite.table.TableUtils;
+import cz.pa181.project.dao.doprava.DopravaPocetNehodDaoImpl;
 import cz.pa181.project.dao.ekonomika.EkonomikaCenyBytovDaoImpl;
 import cz.pa181.project.dao.ekonomika.EkonomikaIndexStartnutiaDaoImpl;
+import cz.pa181.project.dao.ekonomika.EkonomikaMieraNezamestnanostiDaoImpl;
 import cz.pa181.project.dao.infrastruktura.InfrastrukturaPocetPostDaoImpl;
 import cz.pa181.project.dao.kultura.KulturaPamatihodnostiDaoImpl;
 import cz.pa181.project.dao.kultura.KulturaPocetZariadeniDaoImpl;
+import cz.pa181.project.dao.obyvatelstvo.ObyvatelstvoDosiahnuteVzdelanieDaoImpl;
+import cz.pa181.project.dao.obyvatelstvo.ObyvatelstvoPocetDaoImpl;
+import cz.pa181.project.dao.obyvatelstvo.ObyvatelstvoPrirastokDaoImpl;
+import cz.pa181.project.dao.obyvatelstvo.ObyvatelstvoVierovyznanieDaoImpl;
+import cz.pa181.project.dao.socialne.SocialneZariadeniaDaoImpl;
+import cz.pa181.project.dao.spravodlivost.SpravodlivostTrestneCinyDaoImpl;
 import cz.pa181.project.dao.spravodlivost.SpravodlivostTrestneCinyPodVplyvomDaoImpl;
 import cz.pa181.project.dao.vzdelanie.VzdelanieInternatyVSDaoImpl;
+import cz.pa181.project.dao.vzdelanie.VzdelaniePocetZiakovDaoImpl;
 import cz.pa181.project.dao.zdravie.ZdraviePocetLekarovDaoImpl;
 import cz.pa181.project.dao.zdravie.ZdraviePocetNemocnicDaoImpl;
+import cz.pa181.project.dao.zdravie.ZdraviePocetPoliklinikDaoImpl;
 import cz.pa181.project.entity.doprava.DopravaPocetNehod;
 import cz.pa181.project.entity.ekonomika.EkonomikaCenyBytov;
 import cz.pa181.project.entity.ekonomika.EkonomikaIndexStartnutia;
@@ -26,12 +36,12 @@ import cz.pa181.project.entity.socialne.SocialneZariadenia;
 import cz.pa181.project.entity.spravodlivost.SpravodlivostTrestneCiny;
 import cz.pa181.project.entity.spravodlivost.SpravodlivostTrestneCinyPodVplyvom;
 import cz.pa181.project.entity.vzdelanie.VzdelanieInternatyVS;
-import cz.pa181.project.entity.vzdelanie.VzdelaniePocetSkol;
 import cz.pa181.project.entity.vzdelanie.VzdelaniePocetZiakov;
 import cz.pa181.project.entity.zdravie.ZdraviePocetLekarov;
 import cz.pa181.project.entity.zdravie.ZdraviePocetNemocnic;
 import cz.pa181.project.entity.zdravie.ZdraviePocetPoliklinik;
 import cz.pa181.project.enums.Priority;
+import cz.pa181.project.enums.TypSkoly;
 import cz.pa181.project.enums.TypZariadeni;
 import cz.pa181.project.loadData.doprava.DopravaPocetNehodImport;
 import cz.pa181.project.loadData.ekonomika.EkonomikaCenyBytovImport;
@@ -48,7 +58,6 @@ import cz.pa181.project.loadData.socialne.SocialneZariadeniaImport;
 import cz.pa181.project.loadData.spravodlivost.SpravodlivostTrestneCinyImport;
 import cz.pa181.project.loadData.spravodlivost.SpravodlivostTrestneCinyPodVplyvomImport;
 import cz.pa181.project.loadData.vzdelanie.VzdelanieInternatyVSImport;
-import cz.pa181.project.loadData.vzdelanie.VzdelaniePocetSkolImport;
 import cz.pa181.project.loadData.vzdelanie.VzdelaniePocetZiakovImport;
 import cz.pa181.project.loadData.zdravie.ZdraviePocetLekarovImport;
 import cz.pa181.project.loadData.zdravie.ZdraviePocetNemocnicImport;
@@ -60,7 +69,10 @@ import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Class represents: cz.pa181.project.Main Class
@@ -95,31 +107,94 @@ public class Main  extends SpringBootServletInitializer {
 //
 //
 //        //Delete later
-//        testDao(connectionSource);
 //        testCenyBytov(connectionSource);
 //        testApp(connectionSource);
-//        testPametihodnosti(connectionSource);
-//        System.out.println("OK");
-
+        testDAOs(connectionSource);
 
         connectionSource.close();
     }
 
-    private static void testDao(JdbcPooledConnectionSource connectionSource) throws SQLException {
-        ZdraviePocetNemocnicDaoImpl dao = new ZdraviePocetNemocnicDaoImpl(connectionSource);
+    private static void testDAOs(JdbcPooledConnectionSource connectionSource) throws SQLException {
+        DopravaPocetNehodDaoImpl dopravaPocetNehodDao = new DopravaPocetNehodDaoImpl(connectionSource);
 
-        //kazda implementovana metoda v DAO vrati pri zadani validnych parametrov zoradeny zoznam o velkosti 5
-        //napr v tomto pripade to vrati {[" Bratislava II","6"],[" Bratislava I","5"],[" Bratislava III","4"],[" Bratislava V","2"],[" Bratislava IV","0"]}
-        List<String[]> tmp = dao.getPocetNemocnicByRokSorted(2017);
+        EkonomikaIndexStartnutiaDaoImpl ekonomikaIndexStartnutiaDao = new EkonomikaIndexStartnutiaDaoImpl(connectionSource);
+        EkonomikaMieraNezamestnanostiDaoImpl ekonomikaMieraNezamestnanostiDao = new EkonomikaMieraNezamestnanostiDaoImpl(connectionSource);
 
-        String okres = tmp.get(0)[0]; // " BratislavaII"
-        String hodnota = tmp.get(0)[1]; // "6"
+        InfrastrukturaPocetPostDaoImpl infrastrukturaPocetPostDao = new InfrastrukturaPocetPostDaoImpl(connectionSource);
 
-        System.out.println(tmp);
-        System.out.println(okres);
-        System.out.println(hodnota);
+        KulturaPamatihodnostiDaoImpl kulturaPamatihodnostiDao = new KulturaPamatihodnostiDaoImpl(connectionSource);
+        KulturaPocetZariadeniDaoImpl kulturaPocetZariadeniDao = new KulturaPocetZariadeniDaoImpl(connectionSource);
+
+        ObyvatelstvoDosiahnuteVzdelanieDaoImpl obyvatelstvoDosiahnuteVzdelanieDao = new ObyvatelstvoDosiahnuteVzdelanieDaoImpl(connectionSource);
+        ObyvatelstvoPocetDaoImpl obyvatelstvoPocetDao = new ObyvatelstvoPocetDaoImpl(connectionSource);
+        ObyvatelstvoPrirastokDaoImpl obyvatelstvoPrirastokDao = new ObyvatelstvoPrirastokDaoImpl(connectionSource);
+        ObyvatelstvoVierovyznanieDaoImpl obyvatelstvoVierovyznanieDao = new ObyvatelstvoVierovyznanieDaoImpl(connectionSource);
+
+        SocialneZariadeniaDaoImpl socialneZariadeniaDao = new SocialneZariadeniaDaoImpl(connectionSource);
+
+        SpravodlivostTrestneCinyPodVplyvomDaoImpl spravodlivostTrestneCinyPodVplyvomDao = new SpravodlivostTrestneCinyPodVplyvomDaoImpl(connectionSource);
+        SpravodlivostTrestneCinyDaoImpl spravodlivostTrestneCinyDao = new SpravodlivostTrestneCinyDaoImpl(connectionSource);
+
+        VzdelanieInternatyVSDaoImpl vzdelanieInternatyVSDao = new VzdelanieInternatyVSDaoImpl(connectionSource);
+        VzdelaniePocetZiakovDaoImpl vzdelaniePocetZiakovDao = new VzdelaniePocetZiakovDaoImpl(connectionSource);
+
+        ZdraviePocetLekarovDaoImpl zdraviePocetLekarovDao = new ZdraviePocetLekarovDaoImpl(connectionSource);
+        ZdraviePocetNemocnicDaoImpl zdraviePocetNemocnicDao = new ZdraviePocetNemocnicDaoImpl(connectionSource);
+        ZdraviePocetPoliklinikDaoImpl zdraviePocetPoliklinikDao = new ZdraviePocetPoliklinikDaoImpl(connectionSource);
+
+
+        HashMap<String, List<String[]>> map = new HashMap<>();
+
+        map.put("dopravaPocetNehodDao",dopravaPocetNehodDao.getPocetNehodByRokSorted(2020));
+
+        map.put("ekonomikaIndexStartnutiaDao",ekonomikaIndexStartnutiaDao.getIndexStarnutiaByRokSorted(2020));
+        map.put("ekonomikaMieraNezamestnanostiDao",ekonomikaMieraNezamestnanostiDao.getMieraNezamestnanostiByRokSorted(2020));
+
+        map.put("infrastrukturaPocetPostDao",infrastrukturaPocetPostDao.getPocetPostByRokSorted(2020));
+
+        map.put("kulturaPamatihodnostiDao",kulturaPamatihodnostiDao.getPamatihodnostiSorted());
+        map.put("kulturaPocetZariadeniDaoDIVADLO",kulturaPocetZariadeniDao.getPocetZariadeniByRokATypZariadeniaSorted(2020, TypZariadeni.DIVADLO));
+        map.put("kulturaPocetZariadeniDaoGALERIA",kulturaPocetZariadeniDao.getPocetZariadeniByRokATypZariadeniaSorted(2020, TypZariadeni.GALERIA));
+        map.put("kulturaPocetZariadeniDaoKINO",kulturaPocetZariadeniDao.getPocetZariadeniByRokATypZariadeniaSorted(2020, TypZariadeni.KINO));
+        map.put("kulturaPocetZariadeniDaoMUZEUM",kulturaPocetZariadeniDao.getPocetZariadeniByRokATypZariadeniaSorted(2020, TypZariadeni.MUZEUM));
+        map.put("kulturaPocetZariadeniDaoVEDECKA_KNIZNICA",kulturaPocetZariadeniDao.getPocetZariadeniByRokATypZariadeniaSorted(2020, TypZariadeni.VEDECKA_KNIZNICA));
+        map.put("kulturaPocetZariadeniDaoVEREJNA_KNIZNICA",kulturaPocetZariadeniDao.getPocetZariadeniByRokATypZariadeniaSorted(2020, TypZariadeni.VEREJNA_KNIZNICA));
+        map.put("kulturaPocetZariadeniDaoVOLNY_CAS_MLADEZ",kulturaPocetZariadeniDao.getPocetZariadeniByRokATypZariadeniaSorted(2020, TypZariadeni.VOLNY_CAS_MLADEZ));
+
+        map.put("obyvatelstvoDosiahnuteVzdelanieDao",obyvatelstvoDosiahnuteVzdelanieDao.getDosiahnuteVzdelanieSpoluByRokSorted());
+        map.put("obyvatelstvoPrirastokDao",obyvatelstvoPrirastokDao.getPrirastokByRokSorted(2020));
+        map.put("obyvatelstvoPocetDao",obyvatelstvoPocetDao.getPocetObyvatelovByRokSorted(2020));
+        map.put("obyvatelstvoVierovyznanieDao",obyvatelstvoVierovyznanieDao.getVierovyznanieSorted());
+
+        map.put("socialneZariadeniaDao",socialneZariadeniaDao.getPocetSocialnychZariadeniByRokSorted(2020));
+
+        map.put("spravodlivostTrestneCinyPodVplyvomDao",spravodlivostTrestneCinyPodVplyvomDao.getPocetZistenychTrestnychCinovPodVplyvomByRokSorted(2020));
+        map.put("spravodlivostTrestneCinyDao",spravodlivostTrestneCinyDao.getPocetZistenychTrestnychCinovByRokSorted(2020));
+
+        map.put("vzdelanieInternatyVSDaoInternaty",vzdelanieInternatyVSDao.getPocetInternatovByRokSorted(2020));//CHYBA NIE SU DATA V DB
+        map.put("vzdelanieInternatyVSDaoLozka",vzdelanieInternatyVSDao.getPocetLozokByRokSorted(2020)); //CHYBA NIE SU DATA V DB
+        map.put("vzdelaniePocetZiakovDaoGYMNAZIUM",vzdelaniePocetZiakovDao.getPocetZiakovByRokATypSkolySorted(2020, TypSkoly.GYMNAZIUM));
+        map.put("vzdelaniePocetZiakovDaoJAZYKOVA_SKOLA",vzdelaniePocetZiakovDao.getPocetZiakovByRokATypSkolySorted(2020, TypSkoly.JAZYKOVA_SKOLA));
+        map.put("vzdelaniePocetZiakovDaoSTREDNA_ODBORNA_SKOLA",vzdelaniePocetZiakovDao.getPocetZiakovByRokATypSkolySorted(2020, TypSkoly.STREDNA_ODBORNA_SKOLA));
+        map.put("vzdelaniePocetZiakovDaoZAKLADNA_SKOLA)",vzdelaniePocetZiakovDao.getPocetZiakovByRokATypSkolySorted(2020, TypSkoly.ZAKLADNA_SKOLA));
+
+        map.put("zdraviePocetLekarovDao",zdraviePocetLekarovDao.getPocetLekarovByRokSorted(2020));
+        map.put("zdraviePocetNemocnicDao",zdraviePocetNemocnicDao.getPocetNemocnicByRokSorted(2020));
+        map.put("zdraviePocetPoliklinikDao",zdraviePocetPoliklinikDao.getPocetPoliklinkByRokSorted(2020));
+
+        List<String> emptyDB = new ArrayList<>();
+        for (Map.Entry<String,List<String[]>> entry : map.entrySet()){
+            if (entry.getValue().isEmpty()){
+                emptyDB.add(entry.getKey());
+            }
+        }
+        if (!emptyDB.isEmpty()){
+            System.out.println("Niektore tabulky pravdepodobne neobsahuju ziadne data");
+            System.out.println("Pocet chyb: " + emptyDB.size() +" Chyby: " + emptyDB.toString());
+        } else {
+            System.out.println("OK");
+        }
     }
-
 
     private static void testCenyBytov(JdbcPooledConnectionSource connectionSource) throws SQLException {
         EkonomikaCenyBytovDaoImpl ekonomikaCenyBytovDao = new EkonomikaCenyBytovDaoImpl(connectionSource);
@@ -160,13 +235,6 @@ public class Main  extends SpringBootServletInitializer {
 
         System.out.println("Vysledok - Winner takes all " + result); // Result - BratislavaI (3 points) a BratislavaII (3 points)
         System.out.println("Vysledok - Proporcne " + resultOther); // Result - BratislavaI (44 points) (BratislavaII je az na tretom mieste (38 points))
-    }
-
-    private static void testPametihodnosti(JdbcPooledConnectionSource connectionSource) throws SQLException {
-        KulturaPamatihodnostiDaoImpl dao = new KulturaPamatihodnostiDaoImpl(connectionSource);
-        List<KulturaPamatihodnosti> list = dao.queryForAll();
-        List<String[]> tmp = dao.getPamatihodnostiSorted();
-        System.out.println(tmp);
     }
 
 
@@ -232,10 +300,6 @@ public class Main  extends SpringBootServletInitializer {
     }
 
     private static void loadVzdelania(JdbcPooledConnectionSource connectionSource) throws SQLException {
-        TableUtils.createTableIfNotExists(connectionSource, VzdelaniePocetSkol.class);
-        VzdelaniePocetSkolImport vzdelaniePocetSkolImport = new VzdelaniePocetSkolImport();
-        vzdelaniePocetSkolImport.getVzdelaniePocetSkol(connectionSource);
-
         TableUtils.createTableIfNotExists(connectionSource, VzdelaniePocetZiakov.class);
         VzdelaniePocetZiakovImport vzdelaniePocetZiakovImport = new VzdelaniePocetZiakovImport();
         vzdelaniePocetZiakovImport.getVzdelaniePocetZiakov(connectionSource);

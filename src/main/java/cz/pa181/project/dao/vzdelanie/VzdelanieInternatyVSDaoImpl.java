@@ -17,8 +17,12 @@ public class VzdelanieInternatyVSDaoImpl extends BaseDaoImpl<VzdelanieInternatyV
     }
 
     @Override
-    public List<String[]> getPocetLozokByRok(int rok) throws SQLException {
-        return super.queryBuilder().selectRaw("okres").selectRaw("SUM (pocetLozok) as pocetLozoks")
+    public List<String[]> getPocetLozokByRokSorted(int rok) throws SQLException {
+//        int maxRok = getMaxRok();
+//        if (rok > maxRok){
+//            rok = maxRok;
+//        }
+        return super.queryBuilder().selectRaw("okres").selectRaw("SUM(\"pocetLozok\") as pocetLozoks")
                 .groupBy("okres")
                 .orderByRaw("pocetLozoks DESC")
                 .where().eq("rok",rok)
@@ -27,10 +31,19 @@ public class VzdelanieInternatyVSDaoImpl extends BaseDaoImpl<VzdelanieInternatyV
 
     @Override
     public List<String[]> getPocetInternatovByRokSorted(int rok) throws SQLException {
-        return super.queryBuilder().selectRaw("okres").selectRaw("SUM (pocetInternatov) as pocetInternatovs")
+//        int maxRok = getMaxRok();
+//        if (rok > maxRok){
+//            rok = maxRok;
+//        }
+        return super.queryBuilder().selectRaw("okres").selectRaw("SUM (\"pocetInternatov\") as pocetInternatovs")
                 .groupBy("okres")
                 .orderByRaw("pocetInternatovs DESC")
                 .where().eq("rok",rok)
                 .queryRaw().getResults();
+    }
+
+    private Integer getMaxRok() throws SQLException{
+        String tmp = super.queryBuilder().selectRaw("MAX(\"rok\") as maxRok").queryRaw().getResults().get(0)[0];
+        return Integer.parseInt(tmp);
     }
 }

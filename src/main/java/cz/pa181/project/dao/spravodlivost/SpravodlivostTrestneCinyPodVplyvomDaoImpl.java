@@ -18,10 +18,19 @@ public class SpravodlivostTrestneCinyPodVplyvomDaoImpl extends BaseDaoImpl<Sprav
 
     @Override
     public List<String[]> getPocetZistenychTrestnychCinovPodVplyvomByRokSorted(int rok) throws SQLException {
-        return super.queryBuilder().selectRaw("okres").selectRaw("SUM (pocetTrestnychCinovAlkohol + pocetTrestnychCinovDrogy) as pocetTrestnychCinovs")
+        int maxRok = getMaxRok();
+        if (rok > maxRok){
+            rok = maxRok;
+        }
+        return super.queryBuilder().selectRaw("okres").selectRaw("SUM(\"pocetTrestnychCinovAlkohol\" + \"pocetTrestnychCinovDrogy\") as pocetTrestnychCinovs")
                 .groupBy("okres")
                 .orderByRaw("pocetTrestnychCinovs")
                 .where().like("rok","%" + rok + "%")
                 .queryRaw().getResults();
+    }
+
+    private int getMaxRok() throws SQLException{
+        String tmp = super.queryBuilder().selectRaw("MAX(\"rok\") as maxRok").queryRaw().getResults().get(0)[0];
+        return Integer.parseInt(tmp);
     }
 }

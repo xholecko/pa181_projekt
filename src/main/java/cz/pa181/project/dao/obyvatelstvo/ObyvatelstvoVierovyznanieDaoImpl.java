@@ -17,8 +17,8 @@ public class ObyvatelstvoVierovyznanieDaoImpl extends BaseDaoImpl<ObyvatelstvoVi
     }
 
     @Override
-    public List<String[]> getVierovyznanieByRokSorted() throws SQLException {
-        return super.queryBuilder().selectRaw("okres").selectRaw("AVG ((100.0 / spolu) * (spolu - ateisti)) as pocetVeriacichVPercentachs")
+    public List<String[]> getVierovyznanieSorted() throws SQLException {
+        return super.queryBuilder().selectRaw("okres").selectRaw("AVG((100.0 / \"spolu\") * (\"spolu\" - \"ateisti\")) as pocetVeriacichVPercentachs")
                 .groupBy("okres")
                 .orderByRaw("pocetVeriacichVPercentachs DESC")
                 .queryRaw().getResults();

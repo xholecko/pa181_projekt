@@ -18,10 +18,19 @@ public class EkonomikaIndexStartnutiaDaoImpl  extends BaseDaoImpl<EkonomikaIndex
 
     @Override
     public List<String[]> getIndexStarnutiaByRokSorted(int rok) throws SQLException{
-        return super.queryBuilder().selectRaw("okres").selectRaw("AVG (indexStarnutia) as indexStarnutias")
+        int maxRok = getMaxRok();
+        if (rok > maxRok){
+            rok = maxRok;
+        }
+        return super.queryBuilder().selectRaw("okres").selectRaw("AVG(\"indexStarnutia\") as indexStarnutias")
                 .groupBy("okres")
                 .orderByRaw("indexStarnutias")
                 .where().ge("rok",rok)
                 .queryRaw().getResults();
+    }
+
+    private int getMaxRok() throws SQLException{
+        String tmp = super.queryBuilder().selectRaw("MAX(\"rok\") as maxRok").queryRaw().getResults().get(0)[0];
+        return Integer.parseInt(tmp);
     }
 }

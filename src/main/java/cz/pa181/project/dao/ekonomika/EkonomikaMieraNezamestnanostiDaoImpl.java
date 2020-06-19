@@ -19,10 +19,18 @@ public class EkonomikaMieraNezamestnanostiDaoImpl extends BaseDaoImpl<EkonomikaM
 
     @Override
     public List<String[]> getMieraNezamestnanostiByRokSorted(int rok) throws SQLException {
-        return super.queryBuilder().selectRaw("okres").selectRaw("AVG (miera) as mieras")
+        int maxRok = getMaxRok();
+        if (rok > maxRok){
+            rok = maxRok;
+        }
+        return super.queryBuilder().selectRaw("okres").selectRaw("AVG(\"miera\") as mieras")
                 .groupBy("okres")
                 .orderByRaw("mieras")
                 .where().ge("rok",rok)
                 .queryRaw().getResults();
+    }
+    private int getMaxRok() throws SQLException{
+        String tmp = super.queryBuilder().selectRaw("MAX(\"rok\") as maxRok").queryRaw().getResults().get(0)[0];
+        return Integer.parseInt(tmp);
     }
 }
