@@ -66,6 +66,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
+import org.springframework.scheduling.annotation.Scheduled;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -76,42 +77,48 @@ import java.util.Map;
 
 /**
  * Class represents: cz.pa181.project.Main Class
+ *
  * @author xholecko
  */
 @SpringBootApplication
-public class Main  extends SpringBootServletInitializer {
+public class Main extends SpringBootServletInitializer {
 
     @Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
         return application.sources(Main.class);
     }
 
-    public static void main(String[] args)  throws SQLException, IOException {
+    public static void main(String[] args) throws SQLException, IOException {
         SpringApplication application = new SpringApplication(Main.class);
         application.run();
+
+//        testCenyBytov(connectionSource);
+//        testApp(connectionSource);
+//        testDAOs(connectionSource);
+
+    }
+
+    @Scheduled(cron = "0 0 10 10 * ? *") //run every month on 10th day at 10am
+    private void loadUpdatedData() throws SQLException, IOException {
 
         JdbcPooledConnectionSource connectionSource
                 = new JdbcPooledConnectionSource("jdbc:postgresql://echo.db.elephantsql.com:5432/iaiikhsz");
         connectionSource.setUsername("iaiikhsz");
         connectionSource.setPassword("qxD5ZWMDSWhxcN9lNSmts2BQeA2UpcgZ");
 
-//        loadDoprava(connectionSource);
-//        loadEkonomika(connectionSource);
-//        loadInfrastruktura(connectionSource);
-//        loadKultura(connectionSource);
-//        loadObyvatelstvo(connectionSource);
-//        loadSocialne(connectionSource);
-//        loadSpravodlivost(connectionSource);
-//        loadVzdelania(connectionSource);
-//        loadZdravie(connectionSource);
-//
-//
-//        //Delete later
-//        testCenyBytov(connectionSource);
-//        testApp(connectionSource);
-        testDAOs(connectionSource);
+        //niesom si isty ci momentalne nebude tahat 2x veci co tam uz su
+        loadDoprava(connectionSource);
+        loadEkonomika(connectionSource);
+        loadInfrastruktura(connectionSource);
+        loadKultura(connectionSource);
+        loadObyvatelstvo(connectionSource);
+        loadSocialne(connectionSource);
+        loadSpravodlivost(connectionSource);
+        loadVzdelania(connectionSource);
+        loadZdravie(connectionSource);
 
         connectionSource.close();
+
     }
 
     private static void testDAOs(JdbcPooledConnectionSource connectionSource) throws SQLException {
@@ -145,52 +152,52 @@ public class Main  extends SpringBootServletInitializer {
 
         HashMap<String, List<String[]>> map = new HashMap<>();
 
-        map.put("dopravaPocetNehodDao",dopravaPocetNehodDao.getPocetNehodByRokSorted(2020));
+        map.put("dopravaPocetNehodDao", dopravaPocetNehodDao.getPocetNehodByRokSorted(2020));
 
-        map.put("ekonomikaIndexStartnutiaDao",ekonomikaIndexStartnutiaDao.getIndexStarnutiaByRokSorted(2020));
-        map.put("ekonomikaMieraNezamestnanostiDao",ekonomikaMieraNezamestnanostiDao.getMieraNezamestnanostiByRokSorted(2020));
+        map.put("ekonomikaIndexStartnutiaDao", ekonomikaIndexStartnutiaDao.getIndexStarnutiaByRokSorted(2020));
+        map.put("ekonomikaMieraNezamestnanostiDao", ekonomikaMieraNezamestnanostiDao.getMieraNezamestnanostiByRokSorted(2020));
 
-        map.put("infrastrukturaPocetPostDao",infrastrukturaPocetPostDao.getPocetPostByRokSorted(2020));
+        map.put("infrastrukturaPocetPostDao", infrastrukturaPocetPostDao.getPocetPostByRokSorted(2020));
 
-        map.put("kulturaPamatihodnostiDao",kulturaPamatihodnostiDao.getPamatihodnostiSorted());
-        map.put("kulturaPocetZariadeniDaoDIVADLO",kulturaPocetZariadeniDao.getPocetZariadeniByRokATypZariadeniaSorted(2020, TypZariadeni.DIVADLO));
-        map.put("kulturaPocetZariadeniDaoGALERIA",kulturaPocetZariadeniDao.getPocetZariadeniByRokATypZariadeniaSorted(2020, TypZariadeni.GALERIA));
-        map.put("kulturaPocetZariadeniDaoKINO",kulturaPocetZariadeniDao.getPocetZariadeniByRokATypZariadeniaSorted(2020, TypZariadeni.KINO));
-        map.put("kulturaPocetZariadeniDaoMUZEUM",kulturaPocetZariadeniDao.getPocetZariadeniByRokATypZariadeniaSorted(2020, TypZariadeni.MUZEUM));
-        map.put("kulturaPocetZariadeniDaoVEDECKA_KNIZNICA",kulturaPocetZariadeniDao.getPocetZariadeniByRokATypZariadeniaSorted(2020, TypZariadeni.VEDECKA_KNIZNICA));
-        map.put("kulturaPocetZariadeniDaoVEREJNA_KNIZNICA",kulturaPocetZariadeniDao.getPocetZariadeniByRokATypZariadeniaSorted(2020, TypZariadeni.VEREJNA_KNIZNICA));
-        map.put("kulturaPocetZariadeniDaoVOLNY_CAS_MLADEZ",kulturaPocetZariadeniDao.getPocetZariadeniByRokATypZariadeniaSorted(2020, TypZariadeni.VOLNY_CAS_MLADEZ));
+        map.put("kulturaPamatihodnostiDao", kulturaPamatihodnostiDao.getPamatihodnostiSorted());
+        map.put("kulturaPocetZariadeniDaoDIVADLO", kulturaPocetZariadeniDao.getPocetZariadeniByRokATypZariadeniaSorted(2020, TypZariadeni.DIVADLO));
+        map.put("kulturaPocetZariadeniDaoGALERIA", kulturaPocetZariadeniDao.getPocetZariadeniByRokATypZariadeniaSorted(2020, TypZariadeni.GALERIA));
+        map.put("kulturaPocetZariadeniDaoKINO", kulturaPocetZariadeniDao.getPocetZariadeniByRokATypZariadeniaSorted(2020, TypZariadeni.KINO));
+        map.put("kulturaPocetZariadeniDaoMUZEUM", kulturaPocetZariadeniDao.getPocetZariadeniByRokATypZariadeniaSorted(2020, TypZariadeni.MUZEUM));
+        map.put("kulturaPocetZariadeniDaoVEDECKA_KNIZNICA", kulturaPocetZariadeniDao.getPocetZariadeniByRokATypZariadeniaSorted(2020, TypZariadeni.VEDECKA_KNIZNICA));
+        map.put("kulturaPocetZariadeniDaoVEREJNA_KNIZNICA", kulturaPocetZariadeniDao.getPocetZariadeniByRokATypZariadeniaSorted(2020, TypZariadeni.VEREJNA_KNIZNICA));
+        map.put("kulturaPocetZariadeniDaoVOLNY_CAS_MLADEZ", kulturaPocetZariadeniDao.getPocetZariadeniByRokATypZariadeniaSorted(2020, TypZariadeni.VOLNY_CAS_MLADEZ));
 
-        map.put("obyvatelstvoDosiahnuteVzdelanieDao",obyvatelstvoDosiahnuteVzdelanieDao.getDosiahnuteVzdelanieSpoluByRokSorted());
-        map.put("obyvatelstvoPrirastokDao",obyvatelstvoPrirastokDao.getPrirastokByRokSorted(2020));
-        map.put("obyvatelstvoPocetDao",obyvatelstvoPocetDao.getPocetObyvatelovByRokSorted(2020));
-        map.put("obyvatelstvoVierovyznanieDao",obyvatelstvoVierovyznanieDao.getVierovyznanieSorted());
+        map.put("obyvatelstvoDosiahnuteVzdelanieDao", obyvatelstvoDosiahnuteVzdelanieDao.getDosiahnuteVzdelanieSpoluByRokSorted());
+        map.put("obyvatelstvoPrirastokDao", obyvatelstvoPrirastokDao.getPrirastokByRokSorted(2020));
+        map.put("obyvatelstvoPocetDao", obyvatelstvoPocetDao.getPocetObyvatelovByRokSorted(2020));
+        map.put("obyvatelstvoVierovyznanieDao", obyvatelstvoVierovyznanieDao.getVierovyznanieSorted());
 
-        map.put("socialneZariadeniaDao",socialneZariadeniaDao.getPocetSocialnychZariadeniByRokSorted(2020));
+        map.put("socialneZariadeniaDao", socialneZariadeniaDao.getPocetSocialnychZariadeniByRokSorted(2020));
 
-        map.put("spravodlivostTrestneCinyPodVplyvomDao",spravodlivostTrestneCinyPodVplyvomDao.getPocetZistenychTrestnychCinovPodVplyvomByRokSorted(2020));
-        map.put("spravodlivostTrestneCinyDao",spravodlivostTrestneCinyDao.getPocetZistenychTrestnychCinovByRokSorted(2020));
+        map.put("spravodlivostTrestneCinyPodVplyvomDao", spravodlivostTrestneCinyPodVplyvomDao.getPocetZistenychTrestnychCinovPodVplyvomByRokSorted(2020));
+        map.put("spravodlivostTrestneCinyDao", spravodlivostTrestneCinyDao.getPocetZistenychTrestnychCinovByRokSorted(2020));
 
-        map.put("vzdelanieInternatyVSDaoInternaty",vzdelanieInternatyVSDao.getPocetInternatovByRokSorted(2020));//CHYBA NIE SU DATA V DB
-        map.put("vzdelanieInternatyVSDaoLozka",vzdelanieInternatyVSDao.getPocetLozokByRokSorted(2020)); //CHYBA NIE SU DATA V DB
-        map.put("vzdelaniePocetZiakovDaoGYMNAZIUM",vzdelaniePocetZiakovDao.getPocetZiakovByRokATypSkolySorted(2020, TypSkoly.GYMNAZIUM));
-        map.put("vzdelaniePocetZiakovDaoJAZYKOVA_SKOLA",vzdelaniePocetZiakovDao.getPocetZiakovByRokATypSkolySorted(2020, TypSkoly.JAZYKOVA_SKOLA));
-        map.put("vzdelaniePocetZiakovDaoSTREDNA_ODBORNA_SKOLA",vzdelaniePocetZiakovDao.getPocetZiakovByRokATypSkolySorted(2020, TypSkoly.STREDNA_ODBORNA_SKOLA));
-        map.put("vzdelaniePocetZiakovDaoZAKLADNA_SKOLA)",vzdelaniePocetZiakovDao.getPocetZiakovByRokATypSkolySorted(2020, TypSkoly.ZAKLADNA_SKOLA));
+        map.put("vzdelanieInternatyVSDaoInternaty", vzdelanieInternatyVSDao.getPocetInternatovByRokSorted(2020));//CHYBA NIE SU DATA V DB
+        map.put("vzdelanieInternatyVSDaoLozka", vzdelanieInternatyVSDao.getPocetLozokByRokSorted(2020)); //CHYBA NIE SU DATA V DB
+        map.put("vzdelaniePocetZiakovDaoGYMNAZIUM", vzdelaniePocetZiakovDao.getPocetZiakovByRokATypSkolySorted(2020, TypSkoly.GYMNAZIUM));
+        map.put("vzdelaniePocetZiakovDaoJAZYKOVA_SKOLA", vzdelaniePocetZiakovDao.getPocetZiakovByRokATypSkolySorted(2020, TypSkoly.JAZYKOVA_SKOLA));
+        map.put("vzdelaniePocetZiakovDaoSTREDNA_ODBORNA_SKOLA", vzdelaniePocetZiakovDao.getPocetZiakovByRokATypSkolySorted(2020, TypSkoly.STREDNA_ODBORNA_SKOLA));
+        map.put("vzdelaniePocetZiakovDaoZAKLADNA_SKOLA)", vzdelaniePocetZiakovDao.getPocetZiakovByRokATypSkolySorted(2020, TypSkoly.ZAKLADNA_SKOLA));
 
-        map.put("zdraviePocetLekarovDao",zdraviePocetLekarovDao.getPocetLekarovByRokSorted(2020));
-        map.put("zdraviePocetNemocnicDao",zdraviePocetNemocnicDao.getPocetNemocnicByRokSorted(2020));
-        map.put("zdraviePocetPoliklinikDao",zdraviePocetPoliklinikDao.getPocetPoliklinkByRokSorted(2020));
+        map.put("zdraviePocetLekarovDao", zdraviePocetLekarovDao.getPocetLekarovByRokSorted(2020));
+        map.put("zdraviePocetNemocnicDao", zdraviePocetNemocnicDao.getPocetNemocnicByRokSorted(2020));
+        map.put("zdraviePocetPoliklinikDao", zdraviePocetPoliklinikDao.getPocetPoliklinkByRokSorted(2020));
 
         List<String> emptyDB = new ArrayList<>();
-        for (Map.Entry<String,List<String[]>> entry : map.entrySet()){
-            if (entry.getValue().isEmpty()){
+        for (Map.Entry<String, List<String[]>> entry : map.entrySet()) {
+            if (entry.getValue().isEmpty()) {
                 emptyDB.add(entry.getKey());
             }
         }
-        if (!emptyDB.isEmpty()){
+        if (!emptyDB.isEmpty()) {
             System.out.println("Niektore tabulky pravdepodobne neobsahuju ziadne data");
-            System.out.println("Pocet chyb: " + emptyDB.size() +" Chyby: " + emptyDB.toString());
+            System.out.println("Pocet chyb: " + emptyDB.size() + " Chyby: " + emptyDB.toString());
         } else {
             System.out.println("OK");
         }

@@ -1,11 +1,13 @@
 package cz.pa181.project.controllers;
 
 import cz.pa181.project.EvaluateResponse;
-import lombok.Getter;
-import lombok.Setter;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.List;
 
 @Controller
 public class BaseController {
@@ -18,8 +20,8 @@ public class BaseController {
 
     @PostMapping(value = "/evaluate")
     @ResponseBody
-    public EvaluateResponse evaluate(@RequestBody EvaluateResponse vals){
-        return vals;
+    public List<String> evaluate(@RequestBody EvaluateResponse vals) throws IOException, SQLException {
+        return vals.resolve();
     }
 
 }
