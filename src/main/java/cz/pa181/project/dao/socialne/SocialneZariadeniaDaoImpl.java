@@ -14,10 +14,19 @@ public class SocialneZariadeniaDaoImpl extends BaseDaoImpl<SocialneZariadenia, L
 
     @Override
     public List<String[]> getPocetSocialnychZariadeniByRokSorted(int rok) throws SQLException {
-        return super.queryBuilder().selectRaw("okres").selectRaw("SUM (pocet) as pocets")
+        int maxRok = getMaxRok();
+        if (rok > maxRok){
+            rok = maxRok;
+        }
+        return super.queryBuilder().selectRaw("okres").selectRaw("SUM(\"pocet\") as pocets")
                 .groupBy("okres")
                 .orderByRaw("pocets DESC")
                 .where().eq("rok",rok)
                 .queryRaw().getResults();
+    }
+
+    private int getMaxRok() throws SQLException{
+        String tmp = super.queryBuilder().selectRaw("MAX(\"rok\") as maxRok").queryRaw().getResults().get(0)[0];
+        return Integer.parseInt(tmp);
     }
 }

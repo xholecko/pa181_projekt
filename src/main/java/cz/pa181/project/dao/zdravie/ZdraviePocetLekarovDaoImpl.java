@@ -19,10 +19,19 @@ public class ZdraviePocetLekarovDaoImpl extends BaseDaoImpl<ZdraviePocetLekarov,
 
     @Override
     public List<String[]> getPocetLekarovByRokSorted(int rok) throws SQLException {
-        return super.queryBuilder().selectRaw("okres").selectRaw("SUM (lekarDospeli + lekarDeti + stomatolog + gynekolog + specialista) as pocetLekarov")
+        int maxRok = getMaxRok();
+        if (rok > maxRok){
+            rok = maxRok;
+        }
+        return super.queryBuilder().selectRaw("okres").selectRaw("SUM (\"lekarDospeli\" + \"lekarDeti\" + " +
+                "\"stomatolog\" + \"gynekolog\" + \"specialista\") as pocetLekarov")
                 .groupBy("okres")
                 .orderByRaw("pocetLekarov DESC")
                 .where().eq("rok",rok)
                 .queryRaw().getResults();
+    }
+    private int getMaxRok() throws SQLException{
+        String tmp = super.queryBuilder().selectRaw("MAX(\"rok\") as maxRok").queryRaw().getResults().get(0)[0];
+        return Integer.parseInt(tmp);
     }
 }
