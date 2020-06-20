@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Hello ${name}!</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-16">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script>
+        $(function () {
+            $("#sortable-all, #sortable-separator1, #sortable-must, #sortable-separator2, #sortable-nice, #sortable-separator3, #sortable-not").sortable({
+                connectWith: ".connectedSortable"
+            }).disableSelection();
+        });
+        $(document).on("click", "#submitButton", function(){
+            var all = $( "#sortable-all" ).sortable( 'toArray' );
+            var must = $( "#sortable-must" ).sortable( 'toArray' );
+            var nice = $( "#sortable-nice" ).sortable( 'toArray' );
+            var not = $( "#sortable-not" ).sortable( 'toArray' );
+
+            var toSend = {
+                    all: all,
+                    must: must,
+                    nice: nice,
+                    not: not
+                };
+
+            $.ajax({
+                type: 'POST',
+                url: '/evaluate',
+                data: JSON.stringify(toSend), // or JSON.stringify ({name: 'jonas'}),
+                success: function(data) { alert('data: ' + data); },
+                contentType: "application/json",
+                dataType: 'json'
+            });
+        });
+    </script>
+    <style>
+        body {
+            font-family: "Trebuchet MS", Helvetica, sans-serif;
+            text-align: center;
+        }
+
+        #contain {
+            margin-left: 20vw;
+            margin-height: 20vw;
+            width: 60vw;
+            height: 1000px;
+        }
+        #disclaimer {
+            width: 25vw;
+            display: inline-block;
+
+        }
+
+        #castle {
+            width: 25vw;
+            display: inline-block;
+
+        }
+
+        #app-name {
+            width: 25vw;
+            height: 25vw;
+            display: inline-block;
+
+        }
+
+        #box-pic {
+            width: 25vw;
+            height: 25vw;
+            float: right;
+            display: inline-block;
+        }
+
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        #description {
+            padding-left: 10vw;
+            padding-right: 10vw;
+            font-size: 1.6em;
+        }
+
+        .choiseList {
+            width: 15vw;
+            height: 300px;
+            display: inline-block;
+            border: solid thin black;
+            padding: 0px;
+        }
+        li {
+            width: 80px;
+            display: inline-block;
+        }
+        #sortable-all {
+            display: inline-block;
+            width: 100%;
+            height: 200px;
+        }
+    </style>
+</head>
+<body>
+<div id="contain">
+    <div id="app-name"><img src="/nazov_sluzby.png"></div>
+    <div id="box-pic"><img src="/krabice.png"></div>
+    <div id="description">
+        <p>
+            Slu&#382;ba Bratislavsk&yacute; sen V&aacute;m pom&ocirc;&#382;e rozhodn&uacute;&#357; sa,
+
+            v ktorej &#269;asti Bratislavy by ste si mali h&#318;ada&#357; b&yacute;vanie tak,
+
+            aby &#269;o najviac vyhovovalo Va&scaron;im po&#382;iadavk&aacute;m a n&aacute;rokom.
+            Ur&#269;ite &#269;o s&uacute; va&scaron;e priority a my na z&aacute;klade dostupn&yacute;ch d&aacute;t
+
+            vyhodnot&iacute;me, kde by ste sa mali usadi&#357;!
+        </p>
+    </div>
+    <ul id="sortable-all" class="connectedSortable">
+        <li class="ui-state-default" id="1">Historick&eacute; pamiatky</li>
+        <li class="ui-state-default" id="2">Kultúra</li>
+        <li class="ui-state-default" id="3">Lacné bývanie</li>
+        <li class="ui-state-default" id="4">Internáty</li>
+        <li class="ui-state-default" id="5">Školy a škôlky</li>
+        <li class="ui-state-default" id="6">Zdravotnícke zariadenia</li>
+        <li class="ui-state-default" id="7">Sociálne zariadenia</li>
+        <li class="ui-state-default" id="8">Pošty</li>
+        <li class="ui-state-default" id="9">Vzdelané susedstvo</li>
+        <li class="ui-state-default" id="10">Nábožné susedstvo</li>
+        <li class="ui-state-default" id="11">Mladé susedstvo</li>
+        <li class="ui-state-default" id="12">Málo osídlená oblasť</li>
+        <li class="ui-state-default" id="13">Nízka nezamestnanosť</li>
+        <li class="ui-state-default" id="14">Nízka kriminalita</li>
+        <li class="ui-state-default" id="15">Bezpečné cesty</li>
+        <li class="ui-state-default" id="16">Zeleň a parky</li>
+    </ul>
+    <div id="lists">
+        <ul id="sortable-must" class="connectedSortable choiseList">
+        </ul>
+        <ul id="sortable-nice" class="connectedSortable choiseList">
+        </ul>
+        <ul id="sortable-not" class="connectedSortable choiseList">
+        </ul>
+    </div>
+
+    <button type="button" id="submitButton">Chcem bývať</button>
+    <div id="result">
+        <p>
+            Await Result
+        </p>
+    </div>
+
+    <div id="castle"><img src="/hrad.png"></div>
+    <div id="disclaimer">
+        <p>Služba využíva dáta z opendata.bratislava.sk</p>
+    </div>
+</div>
+</body>
+</html>
