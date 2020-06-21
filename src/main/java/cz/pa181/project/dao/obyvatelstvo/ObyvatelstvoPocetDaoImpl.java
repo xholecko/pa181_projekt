@@ -22,7 +22,7 @@ public class ObyvatelstvoPocetDaoImpl extends BaseDaoImpl<ObyvatelstvoPocet, Lon
         if (rok > maxRok){
             rok = maxRok;
         }
-        return super.queryBuilder().selectRaw("okres").selectRaw("AVG(\"pocetObyvatelov\") as pocetObyvatelovs")
+        return super.queryBuilder().selectRaw("okres").selectRaw("SUM(\"pocetObyvatelov\") as pocetObyvatelovs")
                 .groupBy("okres")
                 .orderByRaw("pocetObyvatelovs")
                 .where().eq("rok",rok)

@@ -14,6 +14,13 @@ import java.util.List;
 public interface VzdelaniePocetZiakovDao extends Dao<VzdelaniePocetZiakov,Long> {
 
     /**
+     * @param rok rok (hodnoty od 1996 - 2018) hodnoty rovne ako zadany rok
+     * @return zoradeny list casti bratislavy od casti ktora ma najviac ziakov po cast ktora ma najmenej ziakov
+     * @throws SQLException e
+     */
+    List<String[]> getPocetZiakovByRokSorted(int rok) throws SQLException;
+
+    /**
      * @param typSkoly ZAKLADNA_SKOLA,GYMNAZIUM,JAZYKOVA_SKOLA,STREDNA_ODBORNA_SKOLAA
      * @param rok rok (hodnoty od 1996 - 2018) hodnoty rovne ako zadany rok
      * @return zoradeny list casti bratislavy od casti ktora ma najviac ziakov po cast ktora ma najemej ziakov

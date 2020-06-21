@@ -11,7 +11,7 @@ public enum CriteriaType {
     Posty(8),
     DosiahnuteVzdelanie(9),
     Vierovyznania(10),
-    Prirastok(11),
+    IndexStarnutia(11),
     Obyvatelstvo(12),
     Nezamestnanost(13),
     Krminalita(14),

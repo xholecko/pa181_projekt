@@ -18,6 +18,20 @@ public class VzdelaniePocetZiakovDaoImpl extends BaseDaoImpl<VzdelaniePocetZiako
     }
 
     @Override
+    public List<String[]> getPocetZiakovByRokSorted(int rok) throws SQLException {
+        int maxRok = getMaxRok();
+        if (rok > maxRok){
+            rok = maxRok;
+        }
+        return super.queryBuilder().selectRaw("okres").selectRaw("SUM(\"pocetZiakov\") as pocetZiakovs")
+                .groupBy("okres")
+                .orderByRaw("pocetZiakovs DESC")
+                .where().eq("rok",rok)
+                .queryRaw().getResults();
+    }
+
+
+    @Override
     public List<String[]> getPocetZiakovByRokATypSkolySorted(int rok, TypSkoly typSkoly) throws SQLException {
         int maxRok = getMaxRok();
         if (rok > maxRok){
