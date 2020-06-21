@@ -40,6 +40,7 @@ import java.util.List;
 public class EvaluateResponse {
 
     AppLogic appLogic = new AppLogic();
+    JdbcPooledConnectionSource connectionSource;
 
     DopravaPocetNehodDao dopravaPocetNehod;
     EkonomikaCenyBytovDao ekonomikaCenyBytovDao;
@@ -67,21 +68,26 @@ public class EvaluateResponse {
     public Integer[] not;
 
     public List<String> resolve() throws SQLException, IOException {
-        initConnection();
-        appLogic.reset();
-        CriteriaType[] criteriaTypes = CriteriaType.values();
+        try {
+            initConnection();
+            appLogic.reset();
+            CriteriaType[] criteriaTypes = CriteriaType.values();
 
-        Arrays.stream(must).forEach(i -> {
-            appLogic.addPointsProportional(resultForCriteria(criteriaTypes[i - 1]), Priority.MUST_HAVE);
-        });
-        Arrays.stream(nice).forEach(i -> {
-            appLogic.addPointsProportional(resultForCriteria(criteriaTypes[i - 1]), Priority.NICE_TO_HAVE);
-        });
-        Arrays.stream(not).forEach(i -> {
-            appLogic.addPointsProportional(resultForCriteria(criteriaTypes[i - 1]), Priority.DO_NOT_WANT);
-        });
+            Arrays.stream(must).forEach(i -> {
+                appLogic.addPointsProportional(resultForCriteria(criteriaTypes[i - 1]), Priority.MUST_HAVE);
+            });
+            Arrays.stream(nice).forEach(i -> {
+                appLogic.addPointsProportional(resultForCriteria(criteriaTypes[i - 1]), Priority.NICE_TO_HAVE);
+            });
+            Arrays.stream(not).forEach(i -> {
+                appLogic.addPointsProportional(resultForCriteria(criteriaTypes[i - 1]), Priority.DO_NOT_WANT);
+            });
 
-        return appLogic.getWinner();
+            return appLogic.getWinner();
+        } finally {
+            connectionSource.close();
+        }
+
     }
 
     private List<String[]> resultForCriteria(CriteriaType criteriaType) {
@@ -129,7 +135,7 @@ public class EvaluateResponse {
     }
 
     private void initConnection() throws SQLException, IOException {
-        JdbcPooledConnectionSource connectionSource
+        connectionSource
                 = new JdbcPooledConnectionSource("jdbc:postgresql://echo.db.elephantsql.com:5432/iaiikhsz");
         connectionSource.setUsername("iaiikhsz");
         connectionSource.setPassword("qxD5ZWMDSWhxcN9lNSmts2BQeA2UpcgZ");
@@ -154,6 +160,5 @@ public class EvaluateResponse {
         zdraviePocetNemocnicDao = new ZdraviePocetNemocnicDaoImpl(connectionSource);
         zdraviePocetPoliklinikDao = new ZdraviePocetPoliklinikDaoImpl(connectionSource);
 
-        connectionSource.close();
     }
 }
