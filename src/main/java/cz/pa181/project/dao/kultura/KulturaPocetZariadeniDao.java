@@ -12,6 +12,12 @@ import java.util.List;
  * @author xholecko
  */
 public interface KulturaPocetZariadeniDao extends Dao<KulturaPocetZariadeni, Long> {
+    /**
+     * @param rok rok (hodnoty od 2015 - 2018) hodnoty rovne ako zadany rok
+     * @return zoradeny list casti Bratislavy od casti s najvacsim poctom zariadeni po cast ktora ma najmenej
+     * @throws SQLException e
+     */
+    List<String[]> getPocetZariadeniByRokSorted(int rok) throws SQLException;
 
     /**
      * @param typZariadeni DIVADLO,GALERIA,MUZEUM,KINO,VOLNY_CAS_MLADEZ,VEDECKA_KNIZNICA,VEREJNA_KNIZNICA

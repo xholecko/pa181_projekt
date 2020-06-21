@@ -15,16 +15,13 @@ import cz.pa181.project.dao.socialne.SocialneZariadeniaDao;
 import cz.pa181.project.dao.socialne.SocialneZariadeniaDaoImpl;
 import cz.pa181.project.dao.spravodlivost.SpravodlivostTrestneCinyDao;
 import cz.pa181.project.dao.spravodlivost.SpravodlivostTrestneCinyDaoImpl;
-import cz.pa181.project.dao.spravodlivost.SpravodlivostTrestneCinyPodVplyvomDao;
-import cz.pa181.project.dao.spravodlivost.SpravodlivostTrestneCinyPodVplyvomDaoImpl;
 import cz.pa181.project.dao.vzdelanie.VzdelanieInternatyVSDao;
 import cz.pa181.project.dao.vzdelanie.VzdelanieInternatyVSDaoImpl;
 import cz.pa181.project.dao.vzdelanie.VzdelaniePocetZiakovDao;
 import cz.pa181.project.dao.vzdelanie.VzdelaniePocetZiakovDaoImpl;
-import cz.pa181.project.dao.zdravie.*;
+import cz.pa181.project.dao.zdravie.ZdraviePocetLekarovDao;
+import cz.pa181.project.dao.zdravie.ZdraviePocetLekarovDaoImpl;
 import cz.pa181.project.enums.Priority;
-import cz.pa181.project.enums.TypSkoly;
-import cz.pa181.project.enums.TypZariadeni;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -51,18 +48,13 @@ public class EvaluateResponse {
     KulturaPocetZariadeniDao kulturaPocetZariadeniDao;
     ObyvatelstvoDosiahnuteVzdelanieDao obyvatelstvoDosiahnuteVzdelanieDao;
     ObyvatelstvoPocetDao obyvatelstvoPocetDao;
-    ObyvatelstvoPrirastokDao obyvatelstvoPrirastokDao;
     ObyvatelstvoVierovyznanieDao obyvatelstvoVierovyznanieDao;
     SocialneZariadeniaDao socialneZariadeniaDao;
     SpravodlivostTrestneCinyDao spravodlivostTrestneCinyDao;
-    SpravodlivostTrestneCinyPodVplyvomDao spravodlivostTrestneCinyPodVplyvomDao;
     VzdelanieInternatyVSDao vzdelanieInternatyVSDao;
     VzdelaniePocetZiakovDao vzdelaniePocetZiakovDao;
     ZdraviePocetLekarovDao zdraviePocetLekarovDao;
-    ZdraviePocetNemocnicDao zdraviePocetNemocnicDao;
-    ZdraviePocetPoliklinikDao zdraviePocetPoliklinikDao;
 
-    public Integer[] all;
     public Integer[] must;
     public Integer[] nice;
     public Integer[] not;
@@ -98,17 +90,17 @@ public class EvaluateResponse {
                 case Posty:
                     return infrastrukturaPocetPostDao.getPocetPostByRokSorted(year);
                 case CenyBytov:
-                    return null; // ekonomikaCenyBytovDao.getPriemernuCenuBytovByOkres(null);
+                    return ekonomikaCenyBytovDao.getPriemernuCenuBytovSorted();
                 case Internaty:
                     return vzdelanieInternatyVSDao.getPocetLozokByRokSorted(year);
-                case Prirastok:
-                    return obyvatelstvoPrirastokDao.getPrirastokByRokSorted(year);
+                case IndexStarnutia:
+                    return ekonomikaIndexStartnutiaDao.getIndexStarnutiaByRokSorted(year);
                 case Krminalita:
                     return spravodlivostTrestneCinyDao.getPocetZistenychTrestnychCinovByRokSorted(year);
                 case PocetNehod:
                     return dopravaPocetNehod.getPocetNehodByRokSorted(year);
                 case PocetZiakov:
-                    return vzdelaniePocetZiakovDao.getPocetZiakovByRokATypSkolySorted(year, TypSkoly.ZAKLADNA_SKOLA);
+                    return vzdelaniePocetZiakovDao.getPocetZiakovByRokSorted(year);
                 case Obyvatelstvo:
                     return obyvatelstvoPocetDao.getPocetObyvatelovByRokSorted(year);
                 case Vierovyznania:
@@ -116,7 +108,7 @@ public class EvaluateResponse {
                 case Nezamestnanost:
                     return ekonomikaMieraNezamestnanostiDao.getMieraNezamestnanostiByRokSorted(year);
                 case KulturaZariadenia:
-                    return kulturaPocetZariadeniDao.getPocetZariadeniByRokATypZariadeniaSorted(year, TypZariadeni.GALERIA);
+                    return kulturaPocetZariadeniDao.getPocetZariadeniByRokSorted(year);
                 case DosiahnuteVzdelanie:
                     return obyvatelstvoDosiahnuteVzdelanieDao.getDosiahnuteVzdelanieSpoluByRokSorted();
                 case SocialneZaraiadenia:
@@ -149,16 +141,12 @@ public class EvaluateResponse {
         kulturaPocetZariadeniDao = new KulturaPocetZariadeniDaoImpl(connectionSource);
         obyvatelstvoDosiahnuteVzdelanieDao = new ObyvatelstvoDosiahnuteVzdelanieDaoImpl(connectionSource);
         obyvatelstvoPocetDao = new ObyvatelstvoPocetDaoImpl(connectionSource);
-        obyvatelstvoPrirastokDao = new ObyvatelstvoPrirastokDaoImpl(connectionSource);
         obyvatelstvoVierovyznanieDao = new ObyvatelstvoVierovyznanieDaoImpl(connectionSource);
         socialneZariadeniaDao = new SocialneZariadeniaDaoImpl(connectionSource);
         spravodlivostTrestneCinyDao = new SpravodlivostTrestneCinyDaoImpl(connectionSource);
-        spravodlivostTrestneCinyPodVplyvomDao = new SpravodlivostTrestneCinyPodVplyvomDaoImpl(connectionSource);
         vzdelanieInternatyVSDao = new VzdelanieInternatyVSDaoImpl(connectionSource);
         vzdelaniePocetZiakovDao = new VzdelaniePocetZiakovDaoImpl(connectionSource);
         zdraviePocetLekarovDao = new ZdraviePocetLekarovDaoImpl(connectionSource);
-        zdraviePocetNemocnicDao = new ZdraviePocetNemocnicDaoImpl(connectionSource);
-        zdraviePocetPoliklinikDao = new ZdraviePocetPoliklinikDaoImpl(connectionSource);
 
     }
 }

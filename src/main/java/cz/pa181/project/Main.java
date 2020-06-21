@@ -35,8 +35,6 @@ import cz.pa181.project.entity.obyvatelstvo.ObyvatelstvoVierovyznanie;
 import cz.pa181.project.entity.socialne.SocialneZariadenia;
 import cz.pa181.project.entity.spravodlivost.SpravodlivostTrestneCiny;
 import cz.pa181.project.entity.spravodlivost.SpravodlivostTrestneCinyPodVplyvom;
-import cz.pa181.project.entity.vzdelanie.VzdelanieInternatyVS;
-import cz.pa181.project.entity.vzdelanie.VzdelaniePocetZiakov;
 import cz.pa181.project.entity.zdravie.ZdraviePocetLekarov;
 import cz.pa181.project.entity.zdravie.ZdraviePocetNemocnic;
 import cz.pa181.project.entity.zdravie.ZdraviePocetPoliklinik;
@@ -58,7 +56,6 @@ import cz.pa181.project.loadData.socialne.SocialneZariadeniaImport;
 import cz.pa181.project.loadData.spravodlivost.SpravodlivostTrestneCinyImport;
 import cz.pa181.project.loadData.spravodlivost.SpravodlivostTrestneCinyPodVplyvomImport;
 import cz.pa181.project.loadData.vzdelanie.VzdelanieInternatyVSImport;
-import cz.pa181.project.loadData.vzdelanie.VzdelaniePocetZiakovImport;
 import cz.pa181.project.loadData.zdravie.ZdraviePocetLekarovImport;
 import cz.pa181.project.loadData.zdravie.ZdraviePocetNemocnicImport;
 import cz.pa181.project.loadData.zdravie.ZdraviePocetPoliklinikImport;
@@ -92,9 +89,14 @@ public class Main extends SpringBootServletInitializer {
         SpringApplication application = new SpringApplication(Main.class);
         application.run();
 
+        JdbcPooledConnectionSource connectionSource
+                = new JdbcPooledConnectionSource("jdbc:postgresql://echo.db.elephantsql.com:5432/iaiikhsz");
+        connectionSource.setUsername("iaiikhsz");
+        connectionSource.setPassword("qxD5ZWMDSWhxcN9lNSmts2BQeA2UpcgZ");
+
 //        testCenyBytov(connectionSource);
 //        testApp(connectionSource);
-//        testDAOs(connectionSource);
+       testDAOs(connectionSource);
 
     }
 
@@ -124,6 +126,7 @@ public class Main extends SpringBootServletInitializer {
     private static void testDAOs(JdbcPooledConnectionSource connectionSource) throws SQLException {
         DopravaPocetNehodDaoImpl dopravaPocetNehodDao = new DopravaPocetNehodDaoImpl(connectionSource);
 
+        EkonomikaCenyBytovDaoImpl ekonomikaCenyBytovDao = new EkonomikaCenyBytovDaoImpl((connectionSource));
         EkonomikaIndexStartnutiaDaoImpl ekonomikaIndexStartnutiaDao = new EkonomikaIndexStartnutiaDaoImpl(connectionSource);
         EkonomikaMieraNezamestnanostiDaoImpl ekonomikaMieraNezamestnanostiDao = new EkonomikaMieraNezamestnanostiDaoImpl(connectionSource);
 
@@ -153,13 +156,14 @@ public class Main extends SpringBootServletInitializer {
         HashMap<String, List<String[]>> map = new HashMap<>();
 
         map.put("dopravaPocetNehodDao", dopravaPocetNehodDao.getPocetNehodByRokSorted(2020));
-
+        map.put("ekonomikaCenyBytovDao", ekonomikaCenyBytovDao.getPriemernuCenuBytovSorted());
         map.put("ekonomikaIndexStartnutiaDao", ekonomikaIndexStartnutiaDao.getIndexStarnutiaByRokSorted(2020));
         map.put("ekonomikaMieraNezamestnanostiDao", ekonomikaMieraNezamestnanostiDao.getMieraNezamestnanostiByRokSorted(2020));
 
         map.put("infrastrukturaPocetPostDao", infrastrukturaPocetPostDao.getPocetPostByRokSorted(2020));
 
         map.put("kulturaPamatihodnostiDao", kulturaPamatihodnostiDao.getPamatihodnostiSorted());
+        map.put("kulturaPocetZariadeniDao",kulturaPocetZariadeniDao.getPocetZariadeniByRokSorted(2020));
         map.put("kulturaPocetZariadeniDaoDIVADLO", kulturaPocetZariadeniDao.getPocetZariadeniByRokATypZariadeniaSorted(2020, TypZariadeni.DIVADLO));
         map.put("kulturaPocetZariadeniDaoGALERIA", kulturaPocetZariadeniDao.getPocetZariadeniByRokATypZariadeniaSorted(2020, TypZariadeni.GALERIA));
         map.put("kulturaPocetZariadeniDaoKINO", kulturaPocetZariadeniDao.getPocetZariadeniByRokATypZariadeniaSorted(2020, TypZariadeni.KINO));
@@ -180,6 +184,7 @@ public class Main extends SpringBootServletInitializer {
 
         map.put("vzdelanieInternatyVSDaoInternaty", vzdelanieInternatyVSDao.getPocetInternatovByRokSorted(2020));//CHYBA NIE SU DATA V DB
         map.put("vzdelanieInternatyVSDaoLozka", vzdelanieInternatyVSDao.getPocetLozokByRokSorted(2020)); //CHYBA NIE SU DATA V DB
+        map.put("vzdelaniePocetZiakovDao",vzdelaniePocetZiakovDao.getPocetZiakovByRokSorted(2020));
         map.put("vzdelaniePocetZiakovDaoGYMNAZIUM", vzdelaniePocetZiakovDao.getPocetZiakovByRokATypSkolySorted(2020, TypSkoly.GYMNAZIUM));
         map.put("vzdelaniePocetZiakovDaoJAZYKOVA_SKOLA", vzdelaniePocetZiakovDao.getPocetZiakovByRokATypSkolySorted(2020, TypSkoly.JAZYKOVA_SKOLA));
         map.put("vzdelaniePocetZiakovDaoSTREDNA_ODBORNA_SKOLA", vzdelaniePocetZiakovDao.getPocetZiakovByRokATypSkolySorted(2020, TypSkoly.STREDNA_ODBORNA_SKOLA));
@@ -205,6 +210,7 @@ public class Main extends SpringBootServletInitializer {
 
     private static void testCenyBytov(JdbcPooledConnectionSource connectionSource) throws SQLException {
         EkonomikaCenyBytovDaoImpl ekonomikaCenyBytovDao = new EkonomikaCenyBytovDaoImpl(connectionSource);
+        List<String[]> sorted = ekonomikaCenyBytovDao.getPriemernuCenuBytovSorted();
         String cenaBytovBlavaI = ekonomikaCenyBytovDao.getPriemernuCenuBytovByOkres("BratislavaI");
         System.out.println(cenaBytovBlavaI);
     }
@@ -307,11 +313,11 @@ public class Main extends SpringBootServletInitializer {
     }
 
     private static void loadVzdelania(JdbcPooledConnectionSource connectionSource) throws SQLException {
-        TableUtils.createTableIfNotExists(connectionSource, VzdelaniePocetZiakov.class);
+        /*TableUtils.createTableIfNotExists(connectionSource, VzdelaniePocetZiakov.class);
         VzdelaniePocetZiakovImport vzdelaniePocetZiakovImport = new VzdelaniePocetZiakovImport();
         vzdelaniePocetZiakovImport.getVzdelaniePocetZiakov(connectionSource);
 
-        TableUtils.createTableIfNotExists(connectionSource, VzdelanieInternatyVS.class);
+        TableUtils.createTableIfNotExists(connectionSource, VzdelanieInternatyVS.class);*/
         VzdelanieInternatyVSImport vzdelanieInternatyVSImport = new VzdelanieInternatyVSImport();
         vzdelanieInternatyVSImport.getVzdelanieInternatyVS(connectionSource);
     }

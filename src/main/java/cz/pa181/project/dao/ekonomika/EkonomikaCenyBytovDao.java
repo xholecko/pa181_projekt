@@ -4,6 +4,7 @@ import com.j256.ormlite.dao.Dao;
 import cz.pa181.project.entity.ekonomika.EkonomikaCenyBytov;
 
 import java.sql.SQLException;
+import java.util.List;
 
 /**
  * Class represents:
@@ -11,7 +12,12 @@ import java.sql.SQLException;
  */
 public interface EkonomikaCenyBytovDao extends Dao<EkonomikaCenyBytov, Long> {
 
-
+    /**
+     *
+     * @return zoradeny list casti Bratislavy podle priemerne ceny bytov pre aktualny tyzden v roku od nejnizsi po nejvyssi
+     * @throws SQLException e
+     */
+    List<String[]> getPriemernuCenuBytovSorted() throws SQLException;
 
     /**
      *

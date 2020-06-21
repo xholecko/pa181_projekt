@@ -18,6 +18,19 @@ public class KulturaPocetZariadeniDaoImpl extends BaseDaoImpl<KulturaPocetZariad
     }
 
     @Override
+    public List<String[]> getPocetZariadeniByRokSorted(int rok) throws SQLException {
+        int maxRok = getMaxRok();
+        if (rok > maxRok){
+            rok = maxRok;
+        }
+        return super.queryBuilder().selectRaw("okres").selectRaw("SUM(\"pocetZariadeni\") as pocetZariadenis")
+                .groupBy("okres")
+                .orderByRaw("pocetZariadenis DESC")
+                .where().eq("rok",rok)
+                .queryRaw().getResults();
+    }
+
+    @Override
     public List<String[]> getPocetZariadeniByRokATypZariadeniaSorted(int rok, TypZariadeni typZariadeni) throws SQLException {
         int maxRok = getMaxRok();
         if (rok > maxRok){

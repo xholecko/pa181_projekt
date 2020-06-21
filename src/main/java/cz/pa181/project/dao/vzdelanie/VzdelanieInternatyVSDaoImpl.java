@@ -18,10 +18,10 @@ public class VzdelanieInternatyVSDaoImpl extends BaseDaoImpl<VzdelanieInternatyV
 
     @Override
     public List<String[]> getPocetLozokByRokSorted(int rok) throws SQLException {
-//        int maxRok = getMaxRok();
-//        if (rok > maxRok){
-//            rok = maxRok;
-//        }
+        int maxRok = getMaxRok();
+        if (rok > maxRok){
+            rok = maxRok;
+        }
         return super.queryBuilder().selectRaw("okres").selectRaw("SUM(\"pocetLozok\") as pocetLozoks")
                 .groupBy("okres")
                 .orderByRaw("pocetLozoks DESC")
@@ -31,10 +31,10 @@ public class VzdelanieInternatyVSDaoImpl extends BaseDaoImpl<VzdelanieInternatyV
 
     @Override
     public List<String[]> getPocetInternatovByRokSorted(int rok) throws SQLException {
-//        int maxRok = getMaxRok();
-//        if (rok > maxRok){
-//            rok = maxRok;
-//        }
+        int maxRok = getMaxRok();
+        if (rok > maxRok){
+            rok = maxRok;
+        }
         return super.queryBuilder().selectRaw("okres").selectRaw("SUM (\"pocetInternatov\") as pocetInternatovs")
                 .groupBy("okres")
                 .orderByRaw("pocetInternatovs DESC")
