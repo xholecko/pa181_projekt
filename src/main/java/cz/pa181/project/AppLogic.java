@@ -9,6 +9,15 @@ public class AppLogic {
 
     HashMap<String, Integer> resultMap = new HashMap<>();
 
+    public void reset(){
+        this.resultMap = new HashMap<>();
+        resultMap.put("BratislavaI",0);
+        resultMap.put("BratislavaII",0);
+        resultMap.put("BratislavaIII",0);
+        resultMap.put("BratislavaIV",0);
+        resultMap.put("BratislavaV",0);
+    }
+
     public AppLogic() {
         resultMap.put("BratislavaI",0);
         resultMap.put("BratislavaII",0);

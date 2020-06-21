@@ -1,35 +1,69 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Hello ${name}!</title>
+    <title>Bratislavsk&yacute; sen</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta charset="UTF-16">
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script>
+        var districts = {
+            BratislavaI: {
+                name: "Bratislava I",
+                desc: "Územie okresu Bratislavy I pokrýva mestskú časť Staré Mesto, v ktorej sa nachádza historické jadro a v nich najvýznamnejšie historické pamiatky ako Bratislavský hrad, Slavín, Dóm svätého Martina či Národné divadlo. Staré Mesto vďaka svojej polohe v strede mesta predstavuje významný dopravný uzol pre mestskú hromadnú dopravu, čo znamená, že sa z tejto mestskej časti dostanete rýchlo do všetkých ostatných častí mesta. Cena bytov sa pohybuje priemerne (CENA) za m2. V centre mesta sa nachádza nemocnica Sv. Michala s poliklinikou. Svoj voľný čas môžete tráviť v nákupnom centre Eurovea, prechádzkami v Horskom parku či po nábreží Dunaja.",
+            },
+            BratislavaII: {
+                name: "Bratislava II",
+                desc: "Územie okresu Bratislavy II pokrývajú mestské časti Ružinov, Vrakuňa a Podunajské Biskupice. Cena bytov v okrese sa pohybuje priemerne (CENA) za m2, drahšie byty sú vo vyhľadávanej lokalite Ružinov. Lacnejšie nehnuteľnosti sa nachádzajú v častiach Vrakuňa a Podunajské Biskupice ktoré susedia s rafinériou Slovnaft. V Ružinove sa nachádza druhá najväčšia nemocnica v Bratislave - Ružinovská nemocnica s poliklinikou, ďalej tu pôsobí cirkev Saleziáni don Bosca, ktorá združuje veriace deti a mládež vo svojich oratóriách pri kostoloch. Svoj voľný čas môžete tráviť v nákupnom centre Central či na najväčšom bratislavskom Centrálnom trhovisku, prechádzkami pri Štrkoveckom jazere či bicyklovaním po nových cyklotrasách, ktoré sa v mestskom okrese za posledné roky začali vo veľkom budovať.",
+            },
+            BratislavaIII: {
+                name: "Bratislava III",
+                desc: "Územie okresu Bratislavy III pokrývajú mestské časti Nové Mesto, Rača a Vajnory. Cena bytov v okrese sa pohybuje priemerne (CENA) za m2. V Novom Meste sa nachádza najväčší nemocničný komplex Kramáre. Príjemné prostredie na oddych poskytuje výbežok Malých Karpát - časti Kamzík a Železná studnička, kam chodia Bratislavčania oddychovať do prírody. Časť okresu Bratislavy III zaberajú vinohrady, ktoré sa nachádzajú v mestskej časti Rača. Časť Vajnory slúži hlavne ako priemyselná zóna, najmä v časti Žabí majer sa sústredia výrobné dielne a sklady veľkých firiem.",
+            },
+            BratislavaIV: {
+                name: "Bratislava IV",
+                desc: "Územie okresu Bratislavy IV pokrývajú mestské časti Karlova Ves, Dúbravka, Lamač, Devín, Devínska Nová Ves a Záhorská Bystrica. Cena bytov v okrese sa pohybuje priemerne (CENA) za m2. Vstupom do mestského okresu je Karlova Ves, v ktorej sa nachádzajú najväčšie bratislavské internáty - Družba a Mlynská dolina. Devínska Nová Ves je známa tým, že na jej území pôsobí automobila Volkswagen, ktorá zamestnáva značnú časť obyvateľov Bratislavy. Významnou historickou pamiatkou okresu je zrúcanina hradu Devín ležiaca na brehu sútoku riek Dunaj a Morava, ktorá  predstavuje príjemné miesto na pokojné prechádzky. Veľmi obľúbenou u športovcov je hrádza, u rodín s deťmi zase Zoologická a botanická záhrada.",
+            },
+            BratislavaV: {
+                name: "Bratislava V",
+                desc: "Územie okresu Bratislavy V pokrývajú štyri mestské časti, najväčšou z nich je Petržalka v ktorej sa nachádzajú hlavne panelové sídliská, ďalej sú to odľahlejšie časti Jarovce, Rusovce a Čunovo v ktorých sa nachádzajú najmä rodinné domy. Cena bytov v okrese sa pohybuje priemerne (CENA) za m2. Z časti Jarovce sa dostanete cez hraničný priechod Jarovce - Kittsee do Rakúska, kam každý správny Bratislavčan chodí na týždenné nákupy a tankovať lacnejší a kvalitnejší benzín. Zelenou dominantou Petržalky je sad Janka Kráľa, ktorý sa nachádza pri nákupnom centre Aupark, v tesnom susedstve Starého Mesta. Voľný čas môžete najmä v lete tráviť pri vodnej nádrži Draždiak, či na výstavisku Incheba."
+            }
+        };
+
         $(function () {
             $("#sortable-all, #sortable-separator1, #sortable-must, #sortable-separator2, #sortable-nice, #sortable-separator3, #sortable-not").sortable({
                 connectWith: ".connectedSortable"
             }).disableSelection();
         });
-        $(document).on("click", "#submitButton", function(){
-            var all = $( "#sortable-all" ).sortable( 'toArray' );
-            var must = $( "#sortable-must" ).sortable( 'toArray' );
-            var nice = $( "#sortable-nice" ).sortable( 'toArray' );
-            var not = $( "#sortable-not" ).sortable( 'toArray' );
+        $(document).on("click", "#submitButton", function () {
+            var all = $("#sortable-all").sortable('toArray');
+            var must = $("#sortable-must").sortable('toArray');
+            var nice = $("#sortable-nice").sortable('toArray');
+            var not = $("#sortable-not").sortable('toArray');
 
             var toSend = {
-                    all: all,
-                    must: must,
-                    nice: nice,
-                    not: not
-                };
+                all: all,
+                must: must,
+                nice: nice,
+                not: not
+            };
+            $(".loadgif").toggleClass("loader");
+            $("#result h4").text("");
+            $("#result p").text("");
 
             $.ajax({
                 type: 'POST',
                 url: '/evaluate',
                 data: JSON.stringify(toSend), // or JSON.stringify ({name: 'jonas'}),
-                success: function(data) { alert('data: ' + data); },
+                success: function (data) {
+                    $(".loadgif").toggleClass("loader");
+                    $("#result h4").text(districts[data[0]].name);
+                    $("#result p").text(districts[data[0]].desc);
+                },
+                error: function(data){
+                    $(".loadgif").toggleClass("loader");
+                    $("#result h4").text("Request failed");
+                },
                 contentType: "application/json",
                 dataType: 'json'
             });
@@ -38,37 +72,25 @@
     <style>
         body {
             font-family: "Trebuchet MS", Helvetica, sans-serif;
-            text-align: center;
         }
 
         #contain {
             margin-left: 20vw;
-            margin-height: 20vw;
             width: 60vw;
             height: 1000px;
         }
-        #disclaimer {
-            width: 25vw;
-            display: inline-block;
-
-        }
-
-        #castle {
-            width: 25vw;
-            display: inline-block;
-
-        }
 
         #app-name {
-            width: 25vw;
-            height: 25vw;
+            width: 20vw;
+            margin-left: 7vw;
+            height: 20vw;
             display: inline-block;
-
         }
 
         #box-pic {
-            width: 25vw;
-            height: 25vw;
+            width: 20vw;
+            height: 20vw;
+            margin-right: 7vw;
             float: right;
             display: inline-block;
         }
@@ -82,25 +104,183 @@
         #description {
             padding-left: 10vw;
             padding-right: 10vw;
+            text-align: center;
             font-size: 1.6em;
         }
 
-        .choiseList {
-            width: 15vw;
-            height: 300px;
+        #set {
+            width: 100%;
+            height: 150px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            list-style-type: none;
+            text-align: center;
+        }
+
+        #sortable-all {
+            position: center;
+            width: 75%;
+            height: 100%;
+        }
+
+        #sortable-all li {
             display: inline-block;
-            border: solid thin black;
+        }
+
+        #lists {
+            width: 100%;
+            padding: 20px;
+            height: 340px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .choiseList {
+            width: 100%;
+            height: 80%;
+            margin: 0px;
             padding: 0px;
         }
-        li {
-            width: 80px;
-            display: inline-block;
-        }
-        #sortable-all {
-            display: inline-block;
+
+        .choiseListContainer h5 {
             width: 100%;
-            height: 200px;
+            margin-top: 0.5rem;
+            margin-bottom: 0.5rem;
         }
+
+        .choiseListContainer {
+            width: 25%;
+            height: 100%;
+            float: left;
+            border: solid medium black;
+            border-radius: 12px;
+            padding: 0px;
+            margin: 0px;
+        }
+
+        .niceContainer {
+            margin-right: 30px;
+            margin-left: 30px;
+        }
+
+        li {
+            list-style: none;
+            background-color: #e5ded6;
+            border-color: #c6c2bc;
+            padding: 3px;
+            margin: 5px;
+            border-radius: 12px;
+            border-style: solid;
+            border-width: medium;
+        }
+
+        button {
+            text-align: center;
+            background-color: #d6c0ad;
+            border-color: #ec5934;
+            color: #ec5934;
+            padding: 8px 20px;
+            margin: 5px;
+            border-radius: 5px;
+            border-style: solid;
+            border-width: medium;
+        }
+
+        #resultContainer {
+            width: 100%;
+            text-align: center;
+        }
+
+        #resultContainer p {
+            padding: 0px 10%;
+            text-align: center;
+        }
+
+        #footContainer {
+            width: 100%;
+            display: inline-block;
+        }
+
+        #disclaimer {
+            width: 20vw;
+            margin-left: 7vw;
+            margin-top: 2vw;
+            display: inline-block;
+        }
+
+        #castle {
+            width: 20vw;
+            margin-left: 7vw;
+            margin-top: 2vw;
+            display: inline-block;
+        }
+        #result{
+            min-height: 6em;
+        }
+        /*LOADER*/
+        .loader,
+        .loader:before,
+        .loader:after {
+            background: black;
+            -webkit-animation: load1 1s infinite ease-in-out;
+            animation: load1 1s infinite ease-in-out;
+            width: 1em;
+            height: 4em;
+        }
+        .loader {
+            color: black;
+            text-indent: -9999em;
+            margin: 88px auto;
+            position: relative;
+            font-size: 11px;
+            -webkit-transform: translateZ(0);
+            -ms-transform: translateZ(0);
+            transform: translateZ(0);
+            -webkit-animation-delay: -0.16s;
+            animation-delay: -0.16s;
+        }
+        .loader:before,
+        .loader:after {
+            position: absolute;
+            top: 0;
+            content: '';
+        }
+        .loader:before {
+            left: -1.5em;
+            -webkit-animation-delay: -0.32s;
+            animation-delay: -0.32s;
+        }
+        .loader:after {
+            left: 1.5em;
+        }
+        @-webkit-keyframes load1 {
+            0%,
+            80%,
+            100% {
+                box-shadow: 0 0;
+                height: 4em;
+            }
+            40% {
+                box-shadow: 0 -2em;
+                height: 5em;
+            }
+        }
+        @keyframes load1 {
+            0%,
+            80%,
+            100% {
+                box-shadow: 0 0;
+                height: 4em;
+            }
+            40% {
+                box-shadow: 0 -2em;
+                height: 5em;
+            }
+        }
+
     </style>
 </head>
 <body>
@@ -119,43 +299,57 @@
             vyhodnot&iacute;me, kde by ste sa mali usadi&#357;!
         </p>
     </div>
-    <ul id="sortable-all" class="connectedSortable">
-        <li class="ui-state-default" id="1">Historick&eacute; pamiatky</li>
-        <li class="ui-state-default" id="2">Kultúra</li>
-        <li class="ui-state-default" id="3">Lacné bývanie</li>
-        <li class="ui-state-default" id="4">Internáty</li>
-        <li class="ui-state-default" id="5">Školy a škôlky</li>
-        <li class="ui-state-default" id="6">Zdravotnícke zariadenia</li>
-        <li class="ui-state-default" id="7">Sociálne zariadenia</li>
-        <li class="ui-state-default" id="8">Pošty</li>
-        <li class="ui-state-default" id="9">Vzdelané susedstvo</li>
-        <li class="ui-state-default" id="10">Nábožné susedstvo</li>
-        <li class="ui-state-default" id="11">Mladé susedstvo</li>
-        <li class="ui-state-default" id="12">Málo osídlená oblasť</li>
-        <li class="ui-state-default" id="13">Nízka nezamestnanosť</li>
-        <li class="ui-state-default" id="14">Nízka kriminalita</li>
-        <li class="ui-state-default" id="15">Bezpečné cesty</li>
-        <li class="ui-state-default" id="16">Zeleň a parky</li>
-    </ul>
+    <div id="set">
+        <ul id="sortable-all" class="connectedSortable">
+            <li class="ui-state-default" id="1">Historick&eacute; pamiatky</li>
+            <li class="ui-state-default" id="2">Kult&uacute;ra</li>
+            <li class="ui-state-default" id="3">Lacn&eacute; b&yacute;vanie</li>
+            <li class="ui-state-default" id="4">Intern&aacute;ty</li>
+            <li class="ui-state-default" id="5">&Scaron;koly a &scaron;k&ocirc;lky</li>
+            <li class="ui-state-default" id="6">Zdravotn&iacute;cke zariadenia</li>
+            <li class="ui-state-default" id="7">Soci&aacute;lne zariadenia</li>
+            <li class="ui-state-default" id="8">Po&scaron;ty</li>
+            <li class="ui-state-default" id="9">Vzdelan&eacute; susedstvo</li>
+            <li class="ui-state-default" id="10">N&aacute;bo&#382;n&eacute; susedstvo</li>
+            <li class="ui-state-default" id="11">Mlad&eacute; susedstvo</li>
+            <li class="ui-state-default" id="12">M&aacute;lo os&iacute;dlen&aacute; oblas&#357;</li>
+            <li class="ui-state-default" id="13">N&iacute;zka nezamestnanos&#357;</li>
+            <li class="ui-state-default" id="14">N&iacute;zka kriminalita</li>
+            <li class="ui-state-default" id="15">Bezpe&#269;n&eacute; cesty</li>
+        </ul>
+    </div>
     <div id="lists">
-        <ul id="sortable-must" class="connectedSortable choiseList">
-        </ul>
-        <ul id="sortable-nice" class="connectedSortable choiseList">
-        </ul>
-        <ul id="sortable-not" class="connectedSortable choiseList">
-        </ul>
+        <div class="choiseListContainer">
+            <h5>Mus&iacute;m ma&#357;</h5>
+            <ul id="sortable-must" class="connectedSortable choiseList">
+            </ul>
+        </div>
+        <div class="choiseListContainer niceContainer">
+            <h5>Chcel by som ma&#357;</h5>
+            <ul id="sortable-nice" class="connectedSortable choiseList">
+            </ul>
+        </div>
+        <div class="choiseListContainer">
+            <h5>Nechcem ma&#357;</h5>
+            <ul id="sortable-not" class="connectedSortable choiseList">
+            </ul>
+        </div>
     </div>
-
-    <button type="button" id="submitButton">Chcem bývať</button>
-    <div id="result">
-        <p>
-            Await Result
-        </p>
+    <div id="resultContainer">
+        <button type="button" id="submitButton">Chcem bývať</button>
+        <div id="result">
+            <div class="loadgif"></div>
+            <h4>
+            </h4>
+            <p>
+            </p>
+        </div>
     </div>
-
-    <div id="castle"><img src="/hrad.png"></div>
-    <div id="disclaimer">
-        <p>Služba využíva dáta z opendata.bratislava.sk</p>
+    <div id="footContainer">
+        <div id="castle"><img src="/hrad.png"></div>
+        <div id="disclaimer">
+            <p>Slu&#382;ba vyu&#382;&iacute;va d&aacute;ta z opendata.bratislava.sk</p>
+        </div>
     </div>
 </div>
 </body>
